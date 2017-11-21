@@ -24,11 +24,11 @@ import main.MainFrame;
 public class FriendsListBoardPanel extends JPanel implements ActionListener{
 	private MainFrame mainFrame;
 	private FriendsListPanel f;
-	private JButton face; // 영상통화버튼
-	private JButton voice; // 음성통화버튼
-	private JButton plus; // 대화상대 추가버튼
-	private JButton file;
-	private JButton send;
+	private JLabel face; // 영상통화버튼
+	private JLabel voice; // 음성통화버튼
+	private JLabel plus; // 대화상대 추가버튼
+	private JLabel file;
+	private JLabel send;
 	private JLabel name;
 	private ImageIcon image;
 	private ImageIcon face_img;
@@ -81,28 +81,31 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener{
 		add(stateMessage);
 		
 		face_img = new ImageIcon("images/skype.png");
-		face = new JButton(face_img);
+		face = new JLabel(face_img);
 		face.setBounds(500, 40, 50, 50);
 		face.setBackground(Color.WHITE);
 		face.setOpaque(false);
 		face.setBorder(null);
+		//face.setFocusPainted(false);
 		add(face);
 		
 		voice_img = new ImageIcon("images/voicecall32.png");
-		voice = new JButton(voice_img);
+		voice = new JLabel(voice_img);
 		voice.setBounds(560, 40, 50, 50);
 		voice.setBackground(Color.WHITE);
 		voice.setOpaque(false);
 		voice.setBorder(null);
+		//voice.setFocusPainted(false);
 		voice.addMouseListener(friendsMouseListener);
 		add(voice);
 		
 		plus_img = new ImageIcon("images/multichat.png");
-		plus = new JButton(plus_img);
+		plus = new JLabel(plus_img);
 		plus.setBounds(620, 40, 50, 50);
 		plus.setBackground(Color.WHITE);
 		plus.setOpaque(false);
 		plus.setBorder(null);
+		//plus.setFocusPainted(false);
 		add(plus);
 		
 		chatArea = new JTextArea();
@@ -128,7 +131,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener{
 		add(chatField);
 		
 		file_img = new ImageIcon("images/file.png");
-		file = new JButton(file_img);
+		file = new JLabel(file_img);
 		file.setBounds(570, 615, 30, 30);
 		file.setBackground(Color.WHITE);
 		file.setOpaque(false);
@@ -136,7 +139,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener{
 		add(file);
 		
 		send_img = new ImageIcon("images/send.png");
-		send = new JButton(send_img);
+		send = new JLabel(send_img);
 		send.setBounds(620, 610, 40, 40);
 		send.setBackground(Color.WHITE);
 		send.setOpaque(false);

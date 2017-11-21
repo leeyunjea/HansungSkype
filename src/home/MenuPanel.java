@@ -51,6 +51,7 @@ public class MenuPanel extends JPanel {
 		homeBtn.setToolTipText("HansungSkype홈에서 연락처의 업데이트 내용을 확인하세요.");
 		homeBtn.addMouseListener(new MenuPanelMouseListener());
 		homeBtn.addActionListener(new MenuPanelMouseActionListener());
+		homeBtn.setFocusPainted(false);
 		add(homeBtn);
 
 		tmpBtn = new JButton(new ImageIcon("images/home-iloveimg-resized.png"));
@@ -61,6 +62,7 @@ public class MenuPanel extends JPanel {
 		tmpBtn.setToolTipText("HansungSkype홈에서 연락처의 업데이트 내용을 확인하세요.");
 		tmpBtn.addMouseListener(new MenuPanelMouseListener());
 		tmpBtn.addActionListener(new MenuPanelMouseActionListener());
+		tmpBtn.setFocusPainted(false);
 		add(tmpBtn);
 
 		tmpBtn2 = new JButton(new ImageIcon("images/add-iloveimg-resized.png"));
@@ -71,6 +73,7 @@ public class MenuPanel extends JPanel {
 		tmpBtn2.setToolTipText("누구든지 참여할 수 있는 새 대회를 만듭니다");
 		tmpBtn2.addMouseListener(new MenuPanelMouseListener());
 		tmpBtn2.addActionListener(new MenuPanelMouseActionListener());
+		tmpBtn2.setFocusPainted(false);
 		add(tmpBtn2);
 
 	}
