@@ -15,7 +15,7 @@ import protocol.Protocol;
 import database.UserInfo;
 
 public class ReceiveThread extends Thread {
-	
+
 	private MainFrame mainFrame;
 
 	private String id;
@@ -64,19 +64,21 @@ public class ReceiveThread extends Thread {
 				// stateMsg = stringArr[1];
 				// image = stringArr[2];
 
-				user = (UserInfo)objectInputStream.readObject();
-				users = (Vector<UserInfo>)objectInputStream.readObject();
-
+				user = (UserInfo) objectInputStream.readObject();
+				users = (Vector<UserInfo>) objectInputStream.readObject();
+				printVector();
 				mainFrame.createUser(user);
 				mainFrame.setUsers(users);
 				mainFrame.getLogin().loginSuccess(mainFrame.getUser());
-				
-				while(true) {
-					switch(dataInputStream.readInt()) {
+
+				while (true) {
+					switch (dataInputStream.readInt()) {
 					case Protocol.CLIENT_LOGIN:
 						buffer = dataInputStream.readUTF();
 						InetAddress address = (InetAddress) objectInputStream.readObject();
+						System.out.println(buffer + " " + address);
 						UserInfo connectClient = getUser(buffer);
+						printVector();
 						connectClient.setConnectionState(true);
 						connectClient.setIp(address);
 						mainFrame.getHome().repaint();
@@ -109,13 +111,19 @@ public class ReceiveThread extends Thread {
 		}
 		interrupt();
 	}
-	
+
 	public UserInfo getUser(String id) {
-		for(int i=0; i<users.size(); i++) {
-			if(users.get(i).getId().equals(id))
+		for (int i = 0; i < users.size(); i++) {
+			if (users.get(i).getId().equals(id))
 				return users.get(i);
 		}
 		return null;
+	}
+
+	public void printVector() {
+		for (int i = 0; i < users.size(); i++) {
+			System.out.println(" " + i + " " + users.get(i).getId());
+		}
 	}
 
 }
