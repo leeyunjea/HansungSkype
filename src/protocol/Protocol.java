@@ -1,0 +1,30 @@
+package protocol;
+
+public class Protocol {
+	
+	public static final int LOGIN_REQUEST = 1; // 로그인 요청
+	public static final int LOGIN_SUCCESS = 2; // 로그인 성공
+	public static final int LOGIN_FAIL = 3; // 로그인 실패
+//	public static final int MSG_REQUEST = 4; // 메세지 요청
+//	public static final int MSG_RELAY_SERVER = 5; // 서버에서 메세지 요청 수신
+//	public static final int MSG_RELAY_DESTINATION = 6; // 서버에서 목적지로 메세지 전달
+//	public static final int MSG_RECIEVE = 7; // 목적지에서 서버로 메세지 수신 완료
+//	public static final int STATE_REQUEST = 8; // 상태메세지 변경 요청
+//	public static final int STATE_RESPONSE = 9; // 상태메세지 변경 응답
+//	public static final int STATE_FAIL = 10; // 상태메세지 변경 실패
+//	public static final int STATE_SEND = 11; // 상태메세지 변경 전송
+//	public static final int STATE_SUCCESS = 12; // 상태메세지 변경 전송
+//	public static final int SNS_REQUEST = 13; // SNS 글 요청
+//	public static final int SNS_SUCCESS = 14; // SNS 글 성공
+//	public static final int SNS_FAIL = 15; // SNS 글 실패
+//	public static final int CALL_REQUEST = 16; // 전화 요청
+//	public static final int CALL_INFO_SEND = 17; // 상대방 정보 수신
+//	public static final int CALL_SIGNAL = 18; // 상대방에게 전화 요청
+//	public static final int CALL_RECEIVE = 19; // 전화 요청 수락
+//	public static final int CALL_DENY = 20; // 전화 요청 거절
+//	public static final int CALL_CONNECT_INFO = 21; // 연결 완료(서버로 전화 연결 정보 전달)
+//	public static final int CALL_ADD_USER_REQUEST = 22; // 전화 사용자 추가 요청
+//	public static final int CALL_SESSION_ADD_INFO = 23; // 사용자 추가시 세션 정보 전달
+//	public static final int CALL_SUCCESS_ADD_INFO = 24; // 사용자 추가 정보 확인
+	
+}

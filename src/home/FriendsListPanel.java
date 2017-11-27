@@ -11,7 +11,10 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import font.AppFont;
 import main.MainFrame;
@@ -31,6 +34,10 @@ public class FriendsListPanel extends JPanel {
 
 	private AppFont appFont;
 	private MainFrame mainFrame;
+	
+	/* 팝업메뉴 */
+	private JPopupMenu popup;
+	private FriendsListMouseActionListener listener;
 
 	public FriendsListPanel(MainFrame mainFrame, String icon, String name, String stateMessage, boolean bookmark) {
 		System.out.println("FriendsListPanel");
@@ -45,8 +52,11 @@ public class FriendsListPanel extends JPanel {
 		setBackground(new Color(240, 244, 248));
 		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, new Color(216, 229, 239)));
 
+		listener = new FriendsListMouseActionListener();
+		
 		UIInit();
-		this.addMouseListener(new FriendsListMouseActionListener());
+		menuLayout();
+		this.addMouseListener(listener);
 
 		setVisible(true);
 	}
@@ -95,6 +105,20 @@ public class FriendsListPanel extends JPanel {
 
 	}
 	
+	public void menuLayout() {
+		popup = new JPopupMenu();
+		
+		JMenuItem items[] = null;
+		items = new JMenuItem[5];
+		for(int i=0; i<items.length; i++) {
+			items[i] = new JMenuItem("a" + i);
+			add(items[i]);
+			popup.add(items[i]);
+		}
+		
+		add(popup);
+	}
+	
 	public class FriendsListMouseActionListener implements MouseListener {
 
 		@Override
@@ -105,8 +129,10 @@ public class FriendsListPanel extends JPanel {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-
+			if(e.getModifiers() == MouseEvent.BUTTON3_MASK) {
+				System.out.println("우클릭");
+				popup.show(e.getComponent().getParent(), e.getX(), e.getY());
+			}
 		}
 
 		@Override

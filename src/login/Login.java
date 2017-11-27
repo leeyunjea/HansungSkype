@@ -19,6 +19,8 @@ import javax.swing.JTextField;
 import font.AppFont;
 import home.Home;
 import main.MainFrame;
+import thread.ReceiveThread;
+import user.UserInfo;
 
 public class Login extends JPanel{
 	private JButton loginBtn;
@@ -79,9 +81,8 @@ public class Login extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mainFrame.remove(getParent());
-				mainFrame.setHome(new Home(mainFrame));
-				mainFrame.setContentPane(mainFrame.getHome());
+				ReceiveThread receiveThread = new ReceiveThread(id.getText(), pw.getText(), mainFrame);
+				receiveThread.start();
 			}
 		});
 		
@@ -103,6 +104,12 @@ public class Login extends JPanel{
 		
 		repaint();
 		
+	}
+	
+	public void loginSuccess(UserInfo userInfo) {
+		mainFrame.remove(getParent());
+		mainFrame.setHome(new Home(mainFrame, userInfo));
+		mainFrame.setContentPane(mainFrame.getHome());
 	}
 
 	class LoginMouseListener implements MouseListener {

@@ -10,14 +10,18 @@ import javax.swing.JFrame;
 import home.BoardPanel;
 import home.Home;
 import login.Login;
+import user.UserInfo;
 
 public class MainFrame extends JFrame {
 
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 700;
+	public static final String SERVER_IP = "169.254.81.49";
+	public static final int SERVER_PORT = 9000;
 	private Container contentPane;
 	private Home home;
-	
+	private UserInfo user;
+	private Login login;
 
 	public MainFrame() {
 		super("HansungSkype");
@@ -27,8 +31,8 @@ public class MainFrame extends JFrame {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - WIDTH) / 2, (dim.height - HEIGHT) / 2);
 		setSize(WIDTH, HEIGHT);
-		
-		setContentPane(new Login(this));
+		login = new Login(this);
+		setContentPane(login);
 		setResizable(false);
 		setVisible(true);
 	}
@@ -39,6 +43,18 @@ public class MainFrame extends JFrame {
 	
 	public Home getHome() {
 		return home;
+	}
+	
+	public void createUser(String id, String pw, String name, String stateMsg, String image) {
+		user = new UserInfo(id, pw, name, stateMsg, image);
+	}
+	
+	public UserInfo getUser() {
+		return user;
+	}
+
+	public Login getLogin() {
+		return login;
 	}
 
 }

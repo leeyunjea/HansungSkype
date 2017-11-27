@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import main.MainFrame;
+import user.UserInfo;
 
 public class Home extends JPanel {
 	
@@ -22,8 +23,11 @@ public class Home extends JPanel {
 	private FriendsListBoardPanel friendsListBoardPanel;
 	private JPanel selectedBoardPanel; 
 	
-	public Home(MainFrame mainFrame) {
+	private UserInfo user;
+	
+	public Home(MainFrame mainFrame, UserInfo userInfo) {
 		this.mainFrame = mainFrame;
+		this.user = user;
 		setBackground(Color.MAGENTA);
 		setLayout(null);
 		setSize(MainFrame.WIDTH, MainFrame.HEIGHT);
