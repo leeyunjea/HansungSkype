@@ -63,8 +63,7 @@ public class ReceiveThread extends Thread {
 				close();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			debug.Debug.log("Login Fail");
 		}
 	}
 	
