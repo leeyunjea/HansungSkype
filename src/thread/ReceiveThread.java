@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Vector;
@@ -25,6 +27,7 @@ public class ReceiveThread extends Thread {
 	private DataInputStream dataInputStream = null;
 	private DataOutputStream dataOutputStream = null;
 	private ObjectInputStream objectInputStream = null;
+	private ObjectOutputStream objectOutputStream = null;
 
 	private String buffer;
 
@@ -41,6 +44,7 @@ public class ReceiveThread extends Thread {
 			dataInputStream = new DataInputStream(socket.getInputStream());
 			dataOutputStream = new DataOutputStream(socket.getOutputStream());
 			objectInputStream = new ObjectInputStream(socket.getInputStream());
+			objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 		} catch (UnknownHostException e) {
 			debug.Debug.log("Connect Error");
 		} catch (IOException e) {
@@ -71,10 +75,10 @@ public class ReceiveThread extends Thread {
 					switch(dataInputStream.readInt()) {
 					case Protocol.CLIENT_LOGIN:
 						buffer = dataInputStream.readUTF();
-						String arr[] = buffer.split(",");
-						getUser(arr[0]).setConnectionState(true);
-						getUser(arr[0]).setIp(arr[1]);
-						debug.Debug.log("Client Login  id : " + arr[0] + " ip : " + arr[1]);
+						InetAddress address = (InetAddress) objectInputStream.readObject();
+						UserInfo connectClient = getUser(buffer);
+						connectClient.setConnectionState(true);
+						connectClient.setIp(address);
 						mainFrame.getHome().repaint();
 						break;
 					case Protocol.CLIENT_LOGOUT:
@@ -91,7 +95,6 @@ public class ReceiveThread extends Thread {
 		} catch (IOException e) {
 			debug.Debug.log("Login Fail");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

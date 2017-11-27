@@ -1,6 +1,7 @@
 package database;
 
 import java.io.Serializable;
+import java.net.InetAddress;
 import java.util.Vector;
 
 public class UserInfo implements Serializable {
@@ -9,7 +10,7 @@ public class UserInfo implements Serializable {
 	private String stateMessage;
 	private boolean connectionState;
 	private String image;
-	private String ip;
+	private InetAddress ip;
 	private String id;
 	private Vector<UserInfo> friends;
 	private String pw;
@@ -68,11 +69,11 @@ public class UserInfo implements Serializable {
 		this.image = image;
 	}
 
-	public String getIp() {
+	public InetAddress getIp() {
 		return ip;
 	}
 
-	public void setIp(String ip) {
+	public void setIp(InetAddress ip) {
 		this.ip = ip;
 	}
 
