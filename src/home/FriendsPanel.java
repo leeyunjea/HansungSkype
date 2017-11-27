@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
+import database.UserInfo;
 import home.MenuPanel.MenuPanelMouseListener;
 import main.MainFrame;
 
@@ -34,10 +35,12 @@ public class FriendsPanel extends JScrollPane {
 	// private Vector<BookMarkListPanel> boookmarkPanels;
 	private Vector<FriendsListPanel> friendsPanels;
 	private Object hover = null;
+	private Vector<UserInfo> friendsVector;
 
 	public FriendsPanel(MainFrame mainFrame) {
 		System.out.println("FriendsPanel");
 		this.mainFrame = mainFrame;
+		friendsVector = mainFrame.getUser().getFriends();
 		setLayout(null);
 		//setLayout(new FlowLayout());
 		setBounds(0, 200, 300, 500);
@@ -52,11 +55,10 @@ public class FriendsPanel extends JScrollPane {
 		 */
 
 		friendsPanels = new Vector<FriendsListPanel>();
-		friendsPanels.add(new FriendsListPanel(mainFrame, "images/add-iloveimg-resized.png", "全己巩", "救崇 唱绰 全己巩捞具", false));
-		friendsPanels.add(new FriendsListPanel(mainFrame, "", "全己巩2", "救崇 唱绰 全己巩捞具2", true));
-		friendsPanels.add(new FriendsListPanel(mainFrame, "", "全己巩3", "救崇 唱绰 全己巩捞具3", true));
-		friendsPanels.add(new FriendsListPanel(mainFrame, "", "全己巩4", "救崇 唱绰 全己巩捞具4", false));
-		friendsPanels.add(new FriendsListPanel(mainFrame, "", "全己巩5", "救崇 唱绰 全己巩捞具5", false));
+		for(int i=0; i<friendsVector.size(); i++) {
+			UserInfo user = friendsVector.get(i);
+			friendsPanels.add(new FriendsListPanel(mainFrame, user, false));
+		}
 
 		UIinit();
 		System.out.println("FriendsPanel");

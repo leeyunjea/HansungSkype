@@ -5,6 +5,8 @@ public class Protocol {
 	public static final int LOGIN_REQUEST = 1; // 로그인 요청
 	public static final int LOGIN_SUCCESS = 2; // 로그인 성공
 	public static final int LOGIN_FAIL = 3; // 로그인 실패
+	public static final int CLIENT_LOGIN = 4; // 다른 클라이언트 로그인
+	public static final int CLIENT_LOGOUT = 5; // 다른 클라이언트 로그아웃
 //	public static final int MSG_REQUEST = 4; // 메세지 요청
 //	public static final int MSG_RELAY_SERVER = 5; // 서버에서 메세지 요청 수신
 //	public static final int MSG_RELAY_DESTINATION = 6; // 서버에서 목적지로 메세지 전달

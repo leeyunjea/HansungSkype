@@ -3,6 +3,7 @@ package main;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -10,7 +11,7 @@ import javax.swing.JFrame;
 import home.BoardPanel;
 import home.Home;
 import login.Login;
-import user.UserInfo;
+import database.UserInfo;
 
 public class MainFrame extends JFrame {
 
@@ -21,6 +22,7 @@ public class MainFrame extends JFrame {
 	private Container contentPane;
 	private Home home;
 	private UserInfo user;
+	private Vector<UserInfo> users;
 	private Login login;
 
 	public MainFrame() {
@@ -45,8 +47,8 @@ public class MainFrame extends JFrame {
 		return home;
 	}
 	
-	public void createUser(String id, String pw, String name, String stateMsg, String image) {
-		user = new UserInfo(id, pw, name, stateMsg, image);
+	public void createUser(UserInfo user) {
+		this.user = user;
 	}
 	
 	public UserInfo getUser() {
@@ -55,6 +57,14 @@ public class MainFrame extends JFrame {
 
 	public Login getLogin() {
 		return login;
+	}
+
+	public void setUsers(Vector<UserInfo> users) {
+		this.users = users;
+	}
+	
+	public Vector<UserInfo> getUsers() {
+		return users;
 	}
 
 }

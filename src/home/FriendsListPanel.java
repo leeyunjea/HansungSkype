@@ -16,14 +16,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
+import database.UserInfo;
 import font.AppFont;
 import main.MainFrame;
 
 public class FriendsListPanel extends JPanel {
 
-	private String name;
-	private String stateMessage;
-	private String icon;
 	private Boolean bookmark;
 
 	private ImageIcon image;
@@ -34,17 +32,17 @@ public class FriendsListPanel extends JPanel {
 
 	private AppFont appFont;
 	private MainFrame mainFrame;
-	
+
 	/* 팝업메뉴 */
 	private JPopupMenu popup;
 	private FriendsListMouseActionListener listener;
+	private UserInfo user;
+	private String[] menuText = { "메세지 보내기", "전화 걸기", "친구 삭제" };
 
-	public FriendsListPanel(MainFrame mainFrame, String icon, String name, String stateMessage, boolean bookmark) {
+	public FriendsListPanel(MainFrame mainFrame, UserInfo user, boolean bookmark) {
 		System.out.println("FriendsListPanel");
 		this.mainFrame = mainFrame;
-		this.name = name;
-		this.stateMessage = stateMessage;
-		this.icon = icon;
+		this.user = user;
 		this.bookmark = bookmark;
 
 		setLayout(null);
@@ -53,7 +51,7 @@ public class FriendsListPanel extends JPanel {
 		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, new Color(216, 229, 239)));
 
 		listener = new FriendsListMouseActionListener();
-		
+
 		UIInit();
 		menuLayout();
 		this.addMouseListener(listener);
@@ -62,15 +60,15 @@ public class FriendsListPanel extends JPanel {
 	}
 
 	public String getName() {
-		return name;
+		return user.getName();
 	}
 
 	public String getStateMessage() {
-		return stateMessage;
+		return user.getStateMessage();
 	}
 
 	public String getIcon() {
-		return icon;
+		return user.getName();
 	}
 
 	public ImageIcon getImage() {
@@ -87,38 +85,38 @@ public class FriendsListPanel extends JPanel {
 
 	public void UIInit() {
 		appFont = new AppFont();
-		//image = new ImageIcon("images/add-iloveimg-resized.png");
+		// image = new ImageIcon("images/add-iloveimg-resized.png");
 		image = new ImageIcon("images/add-iloveimg-resized.png");
 		imagelb = new JLabel(image, JLabel.CENTER);
 		imagelb.setBounds(10, 18, 30, 30);
 		add(imagelb);
 
-		namelb = new JLabel(name);
+		namelb = new JLabel(getName());
 		namelb.setFont(appFont.getNameFont());
 		namelb.setBounds(60, 7, 120, 30);
 		add(namelb);
 
-		stateMessagelb = new JLabel(stateMessage);
+		stateMessagelb = new JLabel(getStateMessage());
 		stateMessagelb.setFont(appFont.getStateMessageFont());
-		stateMessagelb.setBounds(60, 42, 120, 15);
+		stateMessagelb.setBounds(60, 42, 200, 15);
 		add(stateMessagelb);
 
 	}
-	
+
 	public void menuLayout() {
 		popup = new JPopupMenu();
-		
+
 		JMenuItem items[] = null;
-		items = new JMenuItem[5];
-		for(int i=0; i<items.length; i++) {
-			items[i] = new JMenuItem("a" + i);
+		items = new JMenuItem[menuText.length];
+		for (int i = 0; i < menuText.length; i++) {
+			items[i] = new JMenuItem(menuText[i]);
 			add(items[i]);
 			popup.add(items[i]);
 		}
-		
+
 		add(popup);
 	}
-	
+
 	public class FriendsListMouseActionListener implements MouseListener {
 
 		@Override
@@ -129,9 +127,9 @@ public class FriendsListPanel extends JPanel {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if(e.getModifiers() == MouseEvent.BUTTON3_MASK) {
-				System.out.println("우클릭");
-				popup.show(e.getComponent().getParent(), e.getX(), e.getY());
+			if (e.getModifiers() == MouseEvent.BUTTON3_MASK) {
+				System.out.println(namelb.getText() + " 우클릭");
+				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		}
 
@@ -149,12 +147,11 @@ public class FriendsListPanel extends JPanel {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			mainFrame.getHome().setBoard(
-					new FriendsListBoardPanel(mainFrame, (FriendsListPanel) e.getComponent()));
+			mainFrame.getHome().setBoard(new FriendsListBoardPanel(mainFrame, (FriendsListPanel) e.getComponent()));
 			invalidate();
 			repaint();
 		}
-		
+
 	}
 
 }

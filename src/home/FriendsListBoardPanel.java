@@ -44,6 +44,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener{
 	private FriendsMouseListener friendsMouseListener =  new FriendsMouseListener();
 	
 	public FriendsListBoardPanel(MainFrame mainFrame, FriendsListPanel f) {
+		
 		this.mainFrame = mainFrame;
 		this.f = f;
 		
@@ -57,7 +58,6 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener{
 		
 		invalidate();
 		repaint();
-		
 		
 	}
 	
@@ -75,7 +75,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener{
 		add(name);
 		
 		stateMessage = new JLabel();
-		stateMessage.setBounds(110, 75, 120, 15);
+		stateMessage.setBounds(110, 75, 250, 15);
 		stateMessage.setText(f.getStateMessage());
 		stateMessage.setFont(appFont.getStateMessageFont());
 		add(stateMessage);

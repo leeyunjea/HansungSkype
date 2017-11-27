@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import main.MainFrame;
-import user.UserInfo;
+import database.UserInfo;
 
 public class Home extends JPanel {
 	
@@ -25,9 +25,9 @@ public class Home extends JPanel {
 	
 	private UserInfo user;
 	
-	public Home(MainFrame mainFrame, UserInfo userInfo) {
+	public Home(MainFrame mainFrame, UserInfo user) {
 		this.mainFrame = mainFrame;
-		this.user = user;
+		this.user = mainFrame.getUser();
 		setBackground(Color.MAGENTA);
 		setLayout(null);
 		setSize(MainFrame.WIDTH, MainFrame.HEIGHT);

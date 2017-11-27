@@ -20,7 +20,7 @@ import font.AppFont;
 import home.Home;
 import main.MainFrame;
 import thread.ReceiveThread;
-import user.UserInfo;
+import database.UserInfo;
 
 public class Login extends JPanel{
 	private JButton loginBtn;

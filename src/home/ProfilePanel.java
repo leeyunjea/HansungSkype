@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import database.UserInfo;
 import font.AppFont;
 import main.MainFrame;
 
@@ -18,8 +19,13 @@ public class ProfilePanel extends JPanel {
 	private JLabel stateMessage;
 	
 	private AppFont appFont;
+	
+	private MainFrame mainFrame;
+	private UserInfo user;
 
 	public ProfilePanel(MainFrame mainFrame) {
+		this.mainFrame = mainFrame;
+		user = mainFrame.getUser();
 		System.out.println("ProfilePanel");
 		setBounds(0, 0, 300, 100);
 		setLayout(null);
@@ -55,12 +61,12 @@ public class ProfilePanel extends JPanel {
 		profile.setBounds(30,17,75,70);
 		add(profile);
 		
-		myName = new JLabel("¿Ã¿±¿Á");
+		myName = new JLabel(user.getName());
 		myName.setFont(appFont.getNameFont());
 		myName.setBounds(120, 27, 120, 30);
 		add(myName);
 		
-		stateMessage = new JLabel("«Ï¿Ã ∏µŒµÈ æ»≥Á");
+		stateMessage = new JLabel(user.getStateMessage());
 		stateMessage.setFont(appFont.getStateMessageFont());
 		stateMessage.setBounds(120, 58, 120, 15);
 		add(stateMessage);
