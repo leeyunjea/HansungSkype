@@ -16,7 +16,7 @@ public class MainFrame extends JFrame {
 
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 700;
-	public static final String SERVER_IP = "169.254.81.49";
+	public static final String SERVER_IP = "223.194.154.75";
 	public static final int SERVER_PORT = 9000;
 	private Container contentPane;
 	private Home home;

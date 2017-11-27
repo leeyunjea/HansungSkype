@@ -29,6 +29,7 @@ public class ReceiveThread extends Thread {
 		this.id = id;
 		this.pw = pw;
 		this.mainFrame = mainFrame;
+		initServer();
 	}
 	
 	public void initServer() {
@@ -62,8 +63,7 @@ public class ReceiveThread extends Thread {
 				close();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			debug.Debug.log("Login Fail");
 		}
 	}
 	
