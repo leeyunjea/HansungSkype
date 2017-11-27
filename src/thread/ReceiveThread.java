@@ -29,6 +29,7 @@ public class ReceiveThread extends Thread {
 		this.id = id;
 		this.pw = pw;
 		this.mainFrame = mainFrame;
+		initServer();
 	}
 	
 	public void initServer() {
