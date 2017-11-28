@@ -32,12 +32,15 @@ public class FriendsListPanel extends JPanel {
 
 	private AppFont appFont;
 	private MainFrame mainFrame;
+	private JMenuItem call;
+	private JMenuItem message;
+	private JMenuItem remove;
+	private int menuCount = 3;
 
 	/* 팝업메뉴 */
 	private JPopupMenu popup;
 	private FriendsListMouseActionListener listener;
 	private UserInfo user;
-	private String[] menuText = { "메세지 보내기", "전화 걸기", "친구 삭제" };
 
 	public FriendsListPanel(MainFrame mainFrame, UserInfo user, boolean bookmark) {
 		System.out.println("FriendsListPanel");
@@ -105,14 +108,15 @@ public class FriendsListPanel extends JPanel {
 
 	public void menuLayout() {
 		popup = new JPopupMenu();
-
-		JMenuItem items[] = null;
-		items = new JMenuItem[menuText.length];
-		for (int i = 0; i < menuText.length; i++) {
-			items[i] = new JMenuItem(menuText[i]);
-			add(items[i]);
-			popup.add(items[i]);
-		}
+		JMenuItem message = new JMenuItem("메세지 보내기");
+		JMenuItem call = new JMenuItem("전화 걸기");
+		JMenuItem remove = new JMenuItem("친구 삭제");
+		message.addActionListener(new MenuActionListener());
+		call.addActionListener(new MenuActionListener());
+		remove.addActionListener(new MenuActionListener());
+		popup.add(message);
+		popup.add(call);
+		popup.add(remove);
 
 		add(popup);
 	}
@@ -154,4 +158,37 @@ public class FriendsListPanel extends JPanel {
 
 	}
 
+	public class MenuActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (user.isConnectionState()) {
+				if (e.getActionCommand().equals("전화 걸기")) {
+					System.out.println("전화 걸기");
+				} else if (e.getActionCommand().equals("메세지 보내기기")) {
+					System.out.println("메세지 보내기");
+				} else if (e.getActionCommand().equals("친구 삭제")) {
+					System.out.println("친구 삭제");
+				}
+			}
+			else {
+				if (e.getActionCommand().equals("전화 걸기")) {
+					System.out.println("상대방이 접속중이 아닙니다.");
+				} else if (e.getActionCommand().equals("메세지 보내기기")) {
+					System.out.println("메세지 보내기");
+				} else if (e.getActionCommand().equals("친구 삭제")) {
+					System.out.println("친구 삭제");
+				}
+			}
+		}
+
+	}
+
+	public String getId() {
+		return user.getId();
+	}
+
+	public boolean isConnectionState() {
+		return user.isConnectionState();
+	}
 }

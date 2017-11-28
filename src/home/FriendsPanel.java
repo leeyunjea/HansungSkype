@@ -131,5 +131,4 @@ public class FriendsPanel extends JScrollPane {
 		repaint();
 	}
 
-
 }

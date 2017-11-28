@@ -66,7 +66,6 @@ public class ReceiveThread extends Thread {
 
 				user = (UserInfo) objectInputStream.readObject();
 				users = (Vector<UserInfo>) objectInputStream.readObject();
-				printVector();
 				mainFrame.createUser(user);
 				mainFrame.setUsers(users);
 				mainFrame.getLogin().loginSuccess(mainFrame.getUser());
@@ -78,7 +77,6 @@ public class ReceiveThread extends Thread {
 						InetAddress address = (InetAddress) objectInputStream.readObject();
 						System.out.println(buffer + " " + address);
 						UserInfo connectClient = getUser(buffer);
-						printVector();
 						connectClient.setConnectionState(true);
 						connectClient.setIp(address);
 						mainFrame.getHome().repaint();
@@ -118,12 +116,6 @@ public class ReceiveThread extends Thread {
 				return users.get(i);
 		}
 		return null;
-	}
-
-	public void printVector() {
-		for (int i = 0; i < users.size(); i++) {
-			System.out.println(" " + i + " " + users.get(i).getId());
-		}
 	}
 
 }
