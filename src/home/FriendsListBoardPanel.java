@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.DataOutputStream;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -20,6 +21,7 @@ import javax.swing.JTextField;
 
 import font.AppFont;
 import main.MainFrame;
+import protocol.Protocol;
 
 public class FriendsListBoardPanel extends JPanel implements ActionListener{
 	private MainFrame mainFrame;
@@ -42,6 +44,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener{
 	private JTextArea chatArea;
 	private JTextField chatField;
 	private FriendsMouseListener friendsMouseListener =  new FriendsMouseListener();
+	private int count = 0; // ¾ß¸Å
 	
 	public FriendsListBoardPanel(MainFrame mainFrame, FriendsListPanel f) {
 		
@@ -191,9 +194,11 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		chatArea.append(chatField.getText()+"\n");
+		String msg = chatField.getText();
+		chatArea.append(msg+"\n");
 		chatArea.setCaretPosition(chatArea.getDocument().getLength());
 		chatField.setText("");
+		mainFrame.getReceiveThread().writeInt(Protocol.CHAT_ROOM_REQUEST);
 	}
 	
 	

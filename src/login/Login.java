@@ -82,6 +82,7 @@ public class Login extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ReceiveThread receiveThread = new ReceiveThread(id.getText(), pw.getText(), mainFrame);
+				mainFrame.setReceiveThread(receiveThread);
 				receiveThread.start();
 				debug.Debug.log("·Î±×ÀÎ!!!");
 			}

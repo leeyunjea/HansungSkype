@@ -86,6 +86,10 @@ public class ReceiveThread extends Thread {
 						getUser(buffer).setConnectionState(false);
 						mainFrame.getHome().repaint();
 						break;
+					case Protocol.MSG_RELAY:
+						buffer = dataInputStream.readUTF();
+						debug.Debug.log(buffer);
+						break;
 					}
 				}
 			} else if (dataInputStream.readInt() == Protocol.LOGIN_FAIL) {
@@ -116,6 +120,24 @@ public class ReceiveThread extends Thread {
 				return users.get(i);
 		}
 		return null;
+	}
+
+	public void writeInt(int i) {
+		try {
+			dataOutputStream.writeInt(i);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void writeUTF(String msg) {
+		try {
+			dataOutputStream.writeUTF(msg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

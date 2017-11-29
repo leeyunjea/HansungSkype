@@ -11,19 +11,21 @@ import javax.swing.JFrame;
 import home.BoardPanel;
 import home.Home;
 import login.Login;
+import thread.ReceiveThread;
 import database.UserInfo;
 
 public class MainFrame extends JFrame {
 
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 700;
-	public static final String SERVER_IP = "223.194.154.75";
+	public static final String SERVER_IP = "127.0.0.1";
 	public static final int SERVER_PORT = 9000;
 	private Container contentPane;
 	private Home home;
 	private UserInfo user;
 	private Vector<UserInfo> users;
 	private Login login;
+	private ReceiveThread receiveThread = null;
 
 	public MainFrame() {
 		super("HansungSkype");
@@ -65,6 +67,14 @@ public class MainFrame extends JFrame {
 	
 	public Vector<UserInfo> getUsers() {
 		return users;
+	}
+
+	public void setReceiveThread(ReceiveThread receiveThread) {
+		this.receiveThread  = receiveThread;
+	}
+	
+	public ReceiveThread getReceiveThread() {
+		return receiveThread;
 	}
 
 }
