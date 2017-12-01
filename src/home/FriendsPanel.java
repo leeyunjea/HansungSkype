@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
+import chat.ChatRoom;
 import database.UserInfo;
 import home.MenuPanel.MenuPanelMouseListener;
 import main.MainFrame;
@@ -130,5 +131,22 @@ public class FriendsPanel extends JScrollPane {
 		invalidate();
 		repaint();
 	}
+	
+	public void setChatRoom(String ids, ChatRoom chatRoom) {
+		String id[] = ids.split(",");
+		String partner;
+		if(!id[0].equals(mainFrame.getUser().getId())) {
+			partner = id[0];
+		}
+		else 
+			partner = id[1];
+		for(int i=0; i<friendsPanels.size(); i++) {
+			if(friendsPanels.get(i).getId().equals(partner)) {
+				friendsPanels.get(i).setChatRoom(chatRoom);
+			}
+		}
+	}
+	
+
 
 }

@@ -8,6 +8,7 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import chat.ChatRoom;
 import home.BoardPanel;
 import home.Home;
 import login.Login;
@@ -26,12 +27,13 @@ public class MainFrame extends JFrame {
 	private Vector<UserInfo> users;
 	private Login login;
 	private ReceiveThread receiveThread = null;
+	private Vector<ChatRoom> rooms;
 
 	public MainFrame() {
 		super("HansungSkype");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-
 		contentPane = getContentPane();
+		rooms = new Vector<ChatRoom>();
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - WIDTH) / 2, (dim.height - HEIGHT) / 2);
 		setSize(WIDTH, HEIGHT);
@@ -75,6 +77,22 @@ public class MainFrame extends JFrame {
 	
 	public ReceiveThread getReceiveThread() {
 		return receiveThread;
+	}
+	
+	public void addRoom(ChatRoom chatRoom) {
+		rooms.add(chatRoom);
+	}
+	
+	public ChatRoom getChatRoom(int RoomId) {
+		for(int i=0; i<rooms.size(); i++) {
+			if(rooms.get(i).getRoomId() == RoomId)
+				return rooms.get(i);
+		}
+		return null;
+	}
+
+	public Vector<ChatRoom> getChatRooms() {
+		return rooms;
 	}
 
 }

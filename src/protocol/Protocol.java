@@ -11,6 +11,10 @@ public class Protocol {
 	public static final int MSG_RELAY = 7; // 서버에서 목적지로 메세지 전달
 	public static final int CHAT_ROOM_REQUEST = 8; // 서버에서 목적지로 메세지 전달
 	public static final int CHAT_ROOM_RESPONSE = 9; // 서버에서 목적지로 메세지 전달
+	public static final int MSG_ADD_USER_REQUEST = 9; // 서버에서 목적지로 메세지 전달
+	public static final int MSG_ADD_USER_RESPONSE = 10; // 서버에서 목적지로 메세지 전달
+	public static final int CONVERSATION_REQUEST = 11; // 서버에서 목적지로 메세지 전달
+	public static final int CONVERSATION_RESPONSE = 12; // 서버에서 목적지로 메세지 전달
 //	public static final int MSG_RECIEVE = 7; // 목적지에서 서버로 메세지 수신 완료
 //	public static final int STATE_REQUEST = 8; // 상태메세지 변경 요청
 //	public static final int STATE_RESPONSE = 9; // 상태메세지 변경 응답

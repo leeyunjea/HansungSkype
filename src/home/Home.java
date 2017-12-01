@@ -65,6 +65,7 @@ public class Home extends JPanel {
 		add(chatRoomsPanel);
 		invalidate();
 		repaint();
+		chatRoomsPanel.repaint();
 		System.out.println("chatRoomsPanel");
 	}
 	
@@ -92,6 +93,14 @@ public class Home extends JPanel {
 	
 	public JPanel getBoard() {
 		return selectedBoardPanel;
+	}
+	
+	public FriendsPanel getFriendsPanel() {
+		return friendsPanel;
+	}
+
+	public ChatRoomsPanel getChatRoomsPanel() {
+		return chatRoomsPanel;
 	}
 	
 

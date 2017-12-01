@@ -91,7 +91,9 @@ public class ListSelectPanel extends JPanel {
 				chatRooms.setForeground(selectedColor);
 				friends.setForeground(Color.BLACK);
 				selected = 2;
+				mainFrame.getHome().getChatRoomsPanel().setChatRooms();
 				mainFrame.getHome().selectedChatRooms();
+				repaint();
 			}
 		}
 

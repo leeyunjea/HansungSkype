@@ -16,6 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
+import chat.ChatRoom;
 import database.UserInfo;
 import font.AppFont;
 import main.MainFrame;
@@ -41,6 +42,8 @@ public class FriendsListPanel extends JPanel {
 	private JPopupMenu popup;
 	private FriendsListMouseActionListener listener;
 	private UserInfo user;
+
+	private ChatRoom chatRoom = null;
 
 	public FriendsListPanel(MainFrame mainFrame, UserInfo user, boolean bookmark) {
 		System.out.println("FriendsListPanel");
@@ -151,7 +154,8 @@ public class FriendsListPanel extends JPanel {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			mainFrame.getHome().setBoard(new FriendsListBoardPanel(mainFrame, (FriendsListPanel) e.getComponent()));
+			mainFrame.getHome()
+					.setBoard(new FriendsListBoardPanel(mainFrame, (FriendsListPanel) e.getComponent(), chatRoom));
 			invalidate();
 			repaint();
 		}
@@ -170,8 +174,7 @@ public class FriendsListPanel extends JPanel {
 				} else if (e.getActionCommand().equals("친구 삭제")) {
 					System.out.println("친구 삭제");
 				}
-			}
-			else {
+			} else {
 				if (e.getActionCommand().equals("전화 걸기")) {
 					System.out.println("상대방이 접속중이 아닙니다.");
 				} else if (e.getActionCommand().equals("메세지 보내기기")) {
@@ -190,5 +193,13 @@ public class FriendsListPanel extends JPanel {
 
 	public boolean isConnectionState() {
 		return user.isConnectionState();
+	}
+
+	public void setChatRoom(ChatRoom chatRoom) {
+		this.chatRoom = chatRoom;
+	}
+
+	public ChatRoom getChatRoom() {
+		return chatRoom;
 	}
 }
