@@ -30,7 +30,7 @@ public class ReceiveThread extends Thread {
 	private DataOutputStream dataOutputStream = null;
 	private ObjectInputStream objectInputStream = null;
 	private ObjectOutputStream objectOutputStream = null;
-	
+
 	private String buffer;
 
 	public ReceiveThread(String id, String pw, MainFrame mainFrame) {
@@ -71,7 +71,6 @@ public class ReceiveThread extends Thread {
 				mainFrame.createUser(user);
 				mainFrame.setUsers(users);
 				mainFrame.getLogin().loginSuccess(mainFrame.getUser());
-				
 
 				while (true) {
 					switch (dataInputStream.readInt()) {
@@ -79,13 +78,13 @@ public class ReceiveThread extends Thread {
 						buffer = dataInputStream.readUTF();
 						InetAddress address = (InetAddress) objectInputStream.readObject();
 						System.out.println(buffer + " " + address + " Client Login");
-						for(int i=0; i<users.size(); i++) {
-							if(users.get(i).getId().equals(buffer)) {
+						for (int i = 0; i < users.size(); i++) {
+							if (users.get(i).getId().equals(buffer)) {
 								users.get(i).setConnectionState(true);
 								debug.Debug.log(users.get(i).getId() + " is Login");
 								break;
 							}
-							
+
 						}
 						mainFrame.getHome().repaint();
 						break;
@@ -98,20 +97,33 @@ public class ReceiveThread extends Thread {
 						int roomId = dataInputStream.readInt();
 						String member = dataInputStream.readUTF();
 						ChatRoom chatRoom = new ChatRoom(member, roomId);
-						debug.Debug.log(id + " ReceiveThread  Get : CHAT_ROOM_RESPONSE\nmember : " + member + " roomId : " + roomId);
+						debug.Debug.log(id + " ReceiveThread  Get : CHAT_ROOM_RESPONSE\nmember : " + member
+								+ " roomId : " + roomId);
 						mainFrame.getHome().getFriendsPanel().setChatRoom(member, chatRoom);
 						mainFrame.addRoom(chatRoom);
 						break;
 					case Protocol.MSG_RELAY:
 						buffer = dataInputStream.readUTF();
-						debug.Debug.log(id + " ReceiveThread  Get : MSG_RELAY   buffer : " + buffer);
+						String buffers[] = buffer.split("::::");
+						if (buffers[1].equals(mainFrame.getUser().getId())) {
+							String space = "";
+							for(int i=0; i<160; i++) {
+								space += " ";
+							}
+							space += buffers[3];
+							mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(space + "\n");
+						} else {
+							mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(buffers[1] + ": " +buffers[3] + "\n");
+						}
+						debug.Debug.log("yun " + id + " ReceiveThread  Get : MSG_RELAY   buffer : " + buffer);
 						break;
 					case Protocol.CONVERSATION_RESPONSE:
 						debug.Debug.log("Get Conversation_Response!!!!!");
 						Vector<ChatRoom> rooms = (Vector<ChatRoom>) objectInputStream.readObject();
 						debug.Debug.log(rooms.toString() + "  rooms.size() : " + rooms.size());
-						for(int i=0; i<rooms.size(); i++) {
-							debug.Debug.log("member : " + rooms.get(i).getNames() + "  roomId : " + rooms.get(i).getRoomId());
+						for (int i = 0; i < rooms.size(); i++) {
+							debug.Debug.log(
+									"member : " + rooms.get(i).getNames() + "  roomId : " + rooms.get(i).getRoomId());
 							debug.Debug.log(rooms.get(i).getChatMessages().toString());
 						}
 						break;
@@ -176,18 +188,18 @@ public class ReceiveThread extends Thread {
 		}
 	}
 
-//	public Vector<ChatRoom> getConversation() {
-//		Vector<ChatRoom> rooms = null;
-//		try {
-//			rooms = (Vector<ChatRoom>) objectInputStream.readObject();
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return rooms;
-//	}
+	// public Vector<ChatRoom> getConversation() {
+	// Vector<ChatRoom> rooms = null;
+	// try {
+	// rooms = (Vector<ChatRoom>) objectInputStream.readObject();
+	// } catch (ClassNotFoundException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// } catch (IOException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// return rooms;
+	// }
 
 }

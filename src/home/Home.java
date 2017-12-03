@@ -95,6 +95,10 @@ public class Home extends JPanel {
 		return selectedBoardPanel;
 	}
 	
+	public FriendsListBoardPanel getFriendsListBoardPanel() {
+		return (FriendsListBoardPanel) selectedBoardPanel;
+	}
+	
 	public FriendsPanel getFriendsPanel() {
 		return friendsPanel;
 	}

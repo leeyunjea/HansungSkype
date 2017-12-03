@@ -135,6 +135,7 @@ public class FriendsPanel extends JScrollPane {
 	public void setChatRoom(String ids, ChatRoom chatRoom) {
 		String id[] = ids.split(",");
 		String partner;
+		System.out.println("yun ids = " + ids);
 		if(!id[0].equals(mainFrame.getUser().getId())) {
 			partner = id[0];
 		}
@@ -146,7 +147,4 @@ public class FriendsPanel extends JScrollPane {
 			}
 		}
 	}
-	
-
-
 }

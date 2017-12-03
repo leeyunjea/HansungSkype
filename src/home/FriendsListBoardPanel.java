@@ -123,7 +123,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		chatArea.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(216, 229, 239)));
 		chatArea.setEditable(false);
 
-		JScrollPane scroll = new JScrollPane(chatArea);
+		JScrollPane scroll = new JScrollPane(chatArea,  JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setBounds(10, 140, mainFrame.WIDTH - 325, 450);
 		scroll.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(216, 229, 239)));
 		scroll.setBackground(Color.WHITE);
@@ -183,9 +183,10 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 				chatField.setText("");
 			}
 			if (e.getSource() == send) {
-				chatArea.append(chatField.getText() + "\n");
+				/*chatArea.append(chatField.getText() + "\n");
 				chatArea.setCaretPosition(chatArea.getDocument().getLength());
-				chatField.setText(" 여기에 메세지 입력");
+				chatField.setText(" 여기에 메세지 입력");*/
+				sendMessage();
 			}
 			if (e.getSource() == voice) {
 				VoiceStandbyPanel voiceStandbyPanel = new VoiceStandbyPanel(mainFrame, f,
@@ -202,15 +203,21 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		sendMessage();
+
+	}
+	
+	public void sendMessage() {
 		String msg = chatField.getText();
 		if (!msg.equals("")) {
-			chatArea.append(msg + "\n");
+			//chatArea.append(msg + "\n");
 			chatArea.setCaretPosition(chatArea.getDocument().getLength());
 			chatField.setText("");
 			if (f.getChatRoom() == null) {
 				mainFrame.getReceiveThread().writeInt(Protocol.CHAT_ROOM_REQUEST);
 				String buffer = user.getId() + "::::" + partnerId + "," + user.getId() + "::::" + msg;
 				mainFrame.getReceiveThread().writeUTF(buffer);
+				
 			}
 			else {
 				mainFrame.getReceiveThread().writeInt(Protocol.MSG_REQUEST);
@@ -218,7 +225,10 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 				mainFrame.getReceiveThread().writeUTF(buffer);
 			}
 		}
-
+	}
+	
+	public JTextArea getTextArea() {
+		return chatArea;
 	}
 	
 	
