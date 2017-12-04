@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import main.MainFrame;
+import thread.ReceiveThread;
 
 public class SmallMessageFrame extends JFrame {
 	private MainFrame mainFrame;
@@ -24,11 +25,14 @@ public class SmallMessageFrame extends JFrame {
 	private SmallMessagePanel s;
 	private String buffer;
 	private String buffers[];
+	private ReceiveThread receiveThread;
+	private MyThread myThread;
 
 	
-	public SmallMessageFrame(MainFrame mainFrame, String buffer) {
+	public SmallMessageFrame(MainFrame mainFrame, String buffer, ReceiveThread receiveThread) {
 		this.mainFrame = mainFrame;
 		this.buffer = buffer;
+		this.receiveThread = receiveThread;
 		buffers = buffer.split("::::");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		contentPane = getContentPane();
@@ -45,7 +49,7 @@ public class SmallMessageFrame extends JFrame {
 		setVisible(true);
 		repaint();
 		
-		MyThread myThread = new MyThread(this);
+		myThread = new MyThread(this);
 		myThread.start();
 		
 		
@@ -160,9 +164,16 @@ public class SmallMessageFrame extends JFrame {
 			try{
 				sleep(3000);
 				s.dispose();
+				receiveThread.setSmallMessageFrame();
 			}catch(InterruptedException e) {
-				e.printStackTrace();
+				return;
 			}
 		}
 	}
+	
+	public void threadInterrupt() {
+		myThread.interrupt();
+	}
+	
+	
 }

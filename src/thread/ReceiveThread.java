@@ -33,6 +33,7 @@ public class ReceiveThread extends Thread {
 	private DataOutputStream dataOutputStream = null;
 	private ObjectInputStream objectInputStream = null;
 	private ObjectOutputStream objectOutputStream = null;
+	private SmallMessageFrame smallMessageFrame = null;
 
 	private String buffer;
 
@@ -116,7 +117,11 @@ public class ReceiveThread extends Thread {
 							space += buffers[3];
 							mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(space + "\n");
 						} else if(mainFrame.getHome().getBoard() instanceof BoardPanel) {
-							new SmallMessageFrame(mainFrame, buffer);
+							if(smallMessageFrame != null) {
+								smallMessageFrame.threadInterrupt();
+								smallMessageFrame.dispose();
+							}
+							smallMessageFrame = new SmallMessageFrame(mainFrame, buffer, this);
 							debug.Debug.log("getFriendsListBoardPanel = null buffer = " + buffer);
 						}
 						else{
@@ -193,6 +198,10 @@ public class ReceiveThread extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void setSmallMessageFrame() {
+		smallMessageFrame = null;
 	}
 
 	// public Vector<ChatRoom> getConversation() {
