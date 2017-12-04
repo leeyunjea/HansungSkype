@@ -42,19 +42,19 @@ public class MainFrame extends JFrame {
 		setResizable(false);
 		setVisible(true);
 	}
-	
+
 	public void setHome(Home home) {
 		this.home = home;
 	}
-	
+
 	public Home getHome() {
 		return home;
 	}
-	
+
 	public void createUser(UserInfo user) {
 		this.user = user;
 	}
-	
+
 	public UserInfo getUser() {
 		return user;
 	}
@@ -66,26 +66,26 @@ public class MainFrame extends JFrame {
 	public void setUsers(Vector<UserInfo> users) {
 		this.users = users;
 	}
-	
+
 	public Vector<UserInfo> getUsers() {
 		return users;
 	}
 
 	public void setReceiveThread(ReceiveThread receiveThread) {
-		this.receiveThread  = receiveThread;
+		this.receiveThread = receiveThread;
 	}
-	
+
 	public ReceiveThread getReceiveThread() {
 		return receiveThread;
 	}
-	
+
 	public void addRoom(ChatRoom chatRoom) {
 		rooms.add(chatRoom);
 	}
-	
+
 	public ChatRoom getChatRoom(int RoomId) {
-		for(int i=0; i<rooms.size(); i++) {
-			if(rooms.get(i).getRoomId() == RoomId)
+		for (int i = 0; i < rooms.size(); i++) {
+			if (rooms.get(i).getRoomId() == RoomId)
 				return rooms.get(i);
 		}
 		return null;
@@ -93,6 +93,14 @@ public class MainFrame extends JFrame {
 
 	public Vector<ChatRoom> getChatRooms() {
 		return rooms;
+	}
+
+	public String getUserName(String id) {
+		for (int i = 0; i < users.size(); i++) {
+			if (users.get(i).getId().equals(id))
+				return users.get(i).getName();
+		}
+		return null;
 	}
 
 }

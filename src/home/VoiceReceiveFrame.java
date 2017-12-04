@@ -36,7 +36,6 @@ public class VoiceReceiveFrame extends JFrame {
 		setLayout(null);
 
 		// setUndecorated(true);
-		setBackground(Color.WHITE);
 
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - WIDTH) - 50, 30);
@@ -120,7 +119,7 @@ public class VoiceReceiveFrame extends JFrame {
 			
 			loadingimg = new ImageIcon("images/loading.gif");
 			loading = new JLabel(loadingimg);
-			loading.setBounds(180, 55, 80, 80);
+			loading.setBounds(185, 55, 80, 80);
 			loading.setOpaque(false);
 			add(loading);
 			

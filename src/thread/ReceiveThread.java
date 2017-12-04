@@ -15,6 +15,9 @@ import chat.ChatRoom;
 import main.MainFrame;
 import protocol.Protocol;
 import database.UserInfo;
+import home.BoardPanel;
+import home.FriendsListBoardPanel;
+import home.SmallMessageFrame;
 
 public class ReceiveThread extends Thread {
 
@@ -112,7 +115,11 @@ public class ReceiveThread extends Thread {
 							}
 							space += buffers[3];
 							mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(space + "\n");
-						} else {
+						} else if(mainFrame.getHome().getBoard() instanceof BoardPanel) {
+							new SmallMessageFrame(mainFrame, buffer);
+							debug.Debug.log("getFriendsListBoardPanel = null buffer = " + buffer);
+						}
+						else{
 							mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(buffers[1] + ": " +buffers[3] + "\n");
 						}
 						debug.Debug.log("yun " + id + " ReceiveThread  Get : MSG_RELAY   buffer : " + buffer);

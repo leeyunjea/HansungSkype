@@ -20,7 +20,7 @@ public class Home extends JPanel {
 	private ListSelectPanel listSelectPanel;
 	private ChatRoomsPanel chatRoomsPanel;
 	private JScrollPane scroll;
-	private FriendsListBoardPanel friendsListBoardPanel;
+	private FriendsListBoardPanel friendsListBoardPanel = null;
 	private JPanel selectedBoardPanel; 
 	
 	private UserInfo user;
