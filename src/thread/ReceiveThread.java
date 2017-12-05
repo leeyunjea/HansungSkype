@@ -124,8 +124,11 @@ public class ReceiveThread extends Thread {
 							smallMessageFrame = new SmallMessageFrame(mainFrame, buffer, this);
 							debug.Debug.log("getFriendsListBoardPanel = null buffer = " + buffer);
 						}
-						else{
+						else if(mainFrame.getHome().getFriendsListBoardPanel().getF().getId().equals(buffers[1])){
 							mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(buffers[1] + ": " +buffers[3] + "\n");
+						}
+						else {
+							smallMessageFrame = new SmallMessageFrame(mainFrame, buffer, this);
 						}
 						debug.Debug.log("yun " + id + " ReceiveThread  Get : MSG_RELAY   buffer : " + buffer);
 						break;

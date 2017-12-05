@@ -100,13 +100,13 @@ public class SmallMessageFrame extends JFrame {
 			
 			yourName.setBounds(90, 20, 150, 20);
 			yourName.setForeground(Color.WHITE);
-			yourName.setFont(new Font("Serif", Font.BOLD, 20));
+			yourName.setFont(new Font("µ¸¿ò", Font.BOLD, 17));
 			add(yourName);
 			
 			yourMessage = new JLabel(buffers[3]);
-			yourMessage.setBounds(89, 47, 150, 20);
+			yourMessage.setBounds(90, 47, 150, 20);
 			yourMessage.setForeground(Color.WHITE);
-			yourMessage.setFont(new Font("Serif", Font.PLAIN, 15));
+			yourMessage.setFont(new Font("µ¸¿ò", Font.PLAIN, 15));
 			add(yourMessage);
 			
 			exitimg = new ImageIcon("images/x.png");

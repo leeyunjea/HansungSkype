@@ -157,6 +157,10 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		send.addMouseListener(friendsMouseListener);
 		add(send);
 	}
+	
+	public FriendsListPanel getF() {
+		return f;
+	}
 
 	class FriendsMouseListener implements MouseListener {
 
