@@ -50,11 +50,13 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 	private String partnerName;
 	private String partnerId;
 	private UserInfo user;
+	private ChatRoom chatRoom;
 
 	public FriendsListBoardPanel(MainFrame mainFrame, FriendsListPanel f, ChatRoom chatRoom) {
-
+		this.chatRoom = chatRoom;
 		this.mainFrame = mainFrame;
 		this.f = f;
+		
 		partnerName = f.getName();
 		partnerId = f.getId();
 		user = mainFrame.getUser();

@@ -18,7 +18,7 @@ public class ChatRoomsPanel extends JPanel {
 
 	private MainFrame mainFrame;
 	private Vector<ChatRoom> rooms;
-	private Vector<ChatRoomListPanel> roomsPanels;
+	private Vector<ChatRoomListPanel> chatRoomListPanels;
 	private int height = 30;
 	
 	private JLabel chatroomname;
@@ -31,7 +31,7 @@ public class ChatRoomsPanel extends JPanel {
 		setBackground(new Color(240, 244, 248));
 		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, new Color(216, 229, 239)));
 		
-		roomsPanels = new Vector<ChatRoomListPanel>();
+		chatRoomListPanels = new Vector<ChatRoomListPanel>();
 		/*for(int i=0; i<rooms.size(); i++) {
 			System.out.println("yunjae rooms size = " + rooms.size());
 			ChatRoom room = rooms.get(i);
@@ -44,7 +44,10 @@ public class ChatRoomsPanel extends JPanel {
 	public void setChatRoom(Vector<ChatRoom> rooms) {
 		if(this.rooms != null)
 			this.rooms.removeAllElements();
-		roomsPanels.clear();
+		for(int i=0; i<chatRoomListPanels.size(); i++) {
+			this.remove(chatRoomListPanels.get(i));
+		}
+		chatRoomListPanels = new Vector<ChatRoomListPanel>();
 		this.rooms = rooms;
 		drawListPanel(rooms);
 	}
@@ -53,9 +56,9 @@ public class ChatRoomsPanel extends JPanel {
 		height = 30;
 		for(int i=0; i<rooms.size(); i++) {
 			ChatRoom room = rooms.get(i);
-			roomsPanels.add(new ChatRoomListPanel(mainFrame, room));
+			chatRoomListPanels.add(new ChatRoomListPanel(mainFrame, room));
 		}
-		addChatRoomListPanels(roomsPanels);
+		addChatRoomListPanels(chatRoomListPanels);
 		invalidate();
 		repaint();
 	}
@@ -72,8 +75,12 @@ public class ChatRoomsPanel extends JPanel {
 		
 	}
 	//À±Àç
-	public ChatRoomListPanel getChatRoomListPanel(int i) {
-		return roomsPanels.get(i);
+	public ChatRoomListPanel getChatRoomListPanel(int id) {
+		for(int i=0; i<chatRoomListPanels.size(); i++) {
+			if(chatRoomListPanels.get(i).getRoomId() == id)
+				return chatRoomListPanels.get(i);
+		}
+		return null;
 	}
 	
 	public Vector<ChatRoom> getVectorChatRoom() {
@@ -111,7 +118,7 @@ public class ChatRoomsPanel extends JPanel {
 			});
 			add(roomsPanels.get(i));
 			height += 70;
-			System.out.println(" height = " + height);
+			//System.out.println(" height = " + height);
 		}
 		invalidate();
 		repaint();
@@ -127,6 +134,7 @@ public class ChatRoomsPanel extends JPanel {
 		if(rooms != null) 
 			this.rooms.removeAllElements();
 		mainFrame.getReceiveThread().conversationListRequest();
+		this.rooms = mainFrame.getChatRooms();
 //		rooms = (Vector<ChatRoom>)mainFrame.getReceiveThread().getConversation();
 //		debug.Debug.log("ChatRoomsPanel Send : CONVERSATION_REQUEST");
 	}

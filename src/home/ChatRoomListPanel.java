@@ -49,7 +49,7 @@ public class ChatRoomListPanel extends JPanel {
 		this.room = room;
 		messages = room.getChatMessages();
 		debug.Debug.log(messages.toString());
-		System.out.println("message = " + message);
+		System.out.println("messages = " + messages);
 		names = room.getNames();
 		roomId = room.getRoomId();
 
@@ -66,20 +66,19 @@ public class ChatRoomListPanel extends JPanel {
 
 		setVisible(true);
 
+		invalidate();
+		repaint();
 	}
 
 	public String getName() {
 		return room.getNames();
-	}
-	public String getMessage() {
-		return latestMessage;
 	}
 
 	public String latestMessage() {
 		message_str = messages.get(messages.size() - 1);
 		buffer = message_str.split("::::");
 		latestMessage = buffer[3];
-		System.out.println("yunjae message_str = " + message_str + "message = "+latestMessage);
+		System.out.println("yunjae message_str = " + message_str + "      latestMessage = "+latestMessage);
 		return latestMessage;
 
 	}
@@ -107,12 +106,15 @@ public class ChatRoomListPanel extends JPanel {
 		roomName.setBounds(60, 7, 120, 30);
 		add(roomName);
 
-		latestMessage();
+		latestMessage = latestMessage();
 		
-		message = new JLabel(getMessage());
+		message = new JLabel(latestMessage);
 		message.setFont(appFont.getStateMessageFont());
 		message.setBounds(60, 42, 200, 15);
 		add(message);
+		
+		invalidate();
+		repaint();
 	}
 
 	public void menuLayout() {
@@ -192,5 +194,17 @@ public class ChatRoomListPanel extends JPanel {
 			// }
 		}
 
+	}
+	
+	public int getRoomId() {
+		return roomId;
+	}
+	
+	public ChatRoom getChatRoom() {
+		return room;
+	}
+	
+	public void setLatestMessage(String msg) {
+		this.latestMessage = msg;
 	}
 }

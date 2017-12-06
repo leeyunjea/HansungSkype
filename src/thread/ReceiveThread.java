@@ -16,6 +16,7 @@ import main.MainFrame;
 import protocol.Protocol;
 import database.UserInfo;
 import home.BoardPanel;
+import home.ChatRoomListPanel;
 import home.FriendsListBoardPanel;
 import home.SmallMessageFrame;
 
@@ -63,8 +64,7 @@ public class ReceiveThread extends Thread {
 		try {
 			String msg = id + "," + pw;
 			dataOutputStream.writeUTF(msg);
-			Vector<ChatRoom> rooms = (Vector<ChatRoom>) objectInputStream.readObject();
-			this.rooms = rooms;
+			rooms = (Vector<ChatRoom>) objectInputStream.readObject();
 
 			if (dataInputStream.readInt() == Protocol.LOGIN_SUCCESS) {
 				debug.Debug.log("Login Success");
@@ -80,7 +80,7 @@ public class ReceiveThread extends Thread {
 				mainFrame.createUser(user);
 				mainFrame.setUsers(users);
 				mainFrame.getLogin().loginSuccess(mainFrame.getUser());
-				
+
 				if (rooms != null) {
 					for (int i = 0; i < rooms.size(); i++) {
 						String member = rooms.get(i).getNames();
@@ -122,6 +122,24 @@ public class ReceiveThread extends Thread {
 					case Protocol.MSG_RELAY:
 						buffer = dataInputStream.readUTF();
 						String buffers[] = buffer.split("::::");
+
+//						ChatRoomListPanel a = mainFrame.getHome().getChatRoomsPanel()
+//								.getChatRoomListPanel(Integer.parseInt(buffers[0]));
+//						if (a != null) {
+//							a.getChatRoom().getChatMessages().add(buffer);
+//							a.repaint();
+//						}
+						//윤재
+						ChatRoomListPanel a = mainFrame.getHome().getChatRoomsPanel()
+								.getChatRoomListPanel(Integer.parseInt(buffers[0]));
+						if (a != null) {
+							a.getChatRoom().getChatMessages().add(buffer);
+							mainFrame.getHome().getChatRoomsPanel().setChatRooms();
+							a.invalidate();
+							a.repaint();
+						}
+						//
+
 						if (buffers[1].equals(mainFrame.getUser().getId())) {
 							String space = "";
 							for (int i = 0; i < 160; i++) {
@@ -145,32 +163,43 @@ public class ReceiveThread extends Thread {
 						debug.Debug.log("if문 밖 yunjae MSG_RELAY roomId = " + buffers[0]);
 						// System.out.println("yunjae rooms size = " +
 						// rooms.size());
+
 						if (rooms != null) {
+
 							System.out.println("yunjae rooms size = " + rooms.size());
 							for (int i = 0; i < rooms.size(); i++) {
 								if (Integer.toString(rooms.get(i).getRoomId()).equals(buffers[0])) {
 									// 윤재
-									// rooms.get(i).addChatMessage(buffer);
-									// mainFrame.getHome().getChatRoomsPanel().getChatRoomListPanel(i).setLatestMessage(rooms.get(i));
+									rooms.get(i).getChatMessages().add(buffer);
 									debug.Debug.log("yunjae MSG_RELAY buffer = " + buffers);
 									debug.Debug.log(
 											"yunjae MSG_RELAY message : " + rooms.get(i).getChatMessages().toString());
 								}
 							}
+
 						}
 						debug.Debug.log("yun " + id + " ReceiveThread  Get : MSG_RELAY   buffer : " + buffer);
+
 						break;
 					case Protocol.CONVERSATION_RESPONSE: // 대화 클릭할때 서버에서 메세지를
 															// 보내줌
 						debug.Debug.log("Get Conversation_Response!!!!!");
-						rooms = (Vector<ChatRoom>) objectInputStream.readObject();
+						this.rooms = (Vector<ChatRoom>) objectInputStream.readObject();
 						for (int i = 0; i < rooms.size(); i++) {
 							debug.Debug.log("yun : " + rooms.get(i).getChatMessages().toString());
 						}
+						// if (rooms != null) {
+						// for (int i = 0; i < rooms.size(); i++) {
+						// String member2 = rooms.get(i).getNames();
+						// debug.Debug.log(rooms.get(i).getNames());
+						// mainFrame.getHome().getFriendsPanel().setFirstChatRoom(member2,
+						// rooms.get(i));
+						// }
+						// }
 						// 윤재
 						// mainFrame.setChatRooms(rooms);
-						// mainFrame.getHome().getFriendsPanel().getFriendsListPanels().g
-						// mainFrame.getHome().getChatRoomsPanel().setChatRoom(rooms);
+						// mainFrame.get;
+						mainFrame.getHome().getChatRoomsPanel().setChatRoom(rooms);
 						//
 						debug.Debug.log(rooms.toString() + "  rooms.size() : " + rooms.size());
 
