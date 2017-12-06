@@ -26,9 +26,8 @@ import font.AppFont;
 import main.MainFrame;
 import protocol.Protocol;
 
-public class FriendsListBoardPanel extends JPanel implements ActionListener {
+public class MultiChatBoardPanel extends JPanel implements ActionListener {
 	private MainFrame mainFrame;
-	private FriendsListPanel f;
 	private JLabel face; // 영상통화버튼
 	private JLabel voice; // 음성통화버튼
 	private JLabel plus; // 대화상대 추가버튼
@@ -53,64 +52,27 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 	private UserInfo user;
 	private ChatRoom chatRoom;
 	private String names;
+	private String members;
 
-	public FriendsListBoardPanel(MainFrame mainFrame, FriendsListPanel f, ChatRoom chatRoom) {
+	public MultiChatBoardPanel(MainFrame mainFrame, String members, ChatRoom chatRoom) {
 		this.chatRoom = chatRoom;
 		this.mainFrame = mainFrame;
-		this.f = f;
-
-		partnerName = f.getName();
-		partnerId = f.getId();
+		this.members = members;
 		user = mainFrame.getUser();
-		String namearr[] = {user.getId(), partnerId};
-		Arrays.sort(namearr);
-		names = namearr[0] + "," + namearr[1];
 		setBounds(300, 0, mainFrame.WIDTH - 300, mainFrame.HEIGHT);
 		setLayout(null);
 		setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createLineBorder(new Color(216, 229, 239)));
-		System.out.println("FriendsListBoardPanel " + "f = " + f.getName());
+		System.out.println("MultiChatBoardPanel " + "members = " + members);
 
 		UIinit();
-		
+
 		if (chatRoom != null) {
 			if (chatRoom.getChatMessages() != null) {
-				for(int i=0; i<chatRoom.getChatMessages().size(); i++) {
+				for (int i = 0; i < chatRoom.getChatMessages().size(); i++) {
 					chatArea.append(chatRoom.getChatMessages().get(i) + "\n");
 				}
-				
-			}
-		}
 
-		invalidate();
-		repaint();
-
-	}
-	
-	public FriendsListBoardPanel(MainFrame mainFrame, String members, ChatRoom chatRoom) {
-		this.chatRoom = chatRoom;
-		this.mainFrame = mainFrame;
-
-		partnerName = f.getName();
-		partnerId = f.getId();
-		user = mainFrame.getUser();
-		String namearr[] = {user.getId(), partnerId};
-		Arrays.sort(namearr);
-		names = namearr[0] + "," + namearr[1];
-		setBounds(300, 0, mainFrame.WIDTH - 300, mainFrame.HEIGHT);
-		setLayout(null);
-		setBackground(Color.WHITE);
-		this.setBorder(BorderFactory.createLineBorder(new Color(216, 229, 239)));
-		System.out.println("FriendsListBoardPanel " + "f = " + f.getName());
-
-		UIinit();
-		
-		if (chatRoom != null) {
-			if (chatRoom.getChatMessages() != null) {
-				for(int i=0; i<chatRoom.getChatMessages().size(); i++) {
-					chatArea.append(chatRoom.getChatMessages().get(i) + "\n");
-				}
-				
 			}
 		}
 
@@ -127,14 +89,14 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		add(icon_lb);
 
 		name = new JLabel();
-		name.setText(f.getName());
+		name.setText(members);
 		name.setFont(appFont.getNameFont());
 		name.setBounds(110, 40, 100, 30);
 		add(name);
 
 		stateMessage = new JLabel();
 		stateMessage.setBounds(110, 75, 250, 15);
-		stateMessage.setText(f.getStateMessage());
+		stateMessage.setText(members);
 		stateMessage.setFont(appFont.getStateMessageFont());
 		add(stateMessage);
 
@@ -207,8 +169,8 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		add(send);
 	}
 
-	public FriendsListPanel getF() {
-		return f;
+	public String getMembers() {
+		return members;
 	}
 
 	class FriendsMouseListener implements MouseListener {
@@ -243,11 +205,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 				 */
 				sendMessage();
 			}
-			if (e.getSource() == voice) {
-				VoiceStandbyPanel voiceStandbyPanel = new VoiceStandbyPanel(mainFrame, f,
-						mainFrame.getHome().getProfilePanel());
-				mainFrame.setContentPane(voiceStandbyPanel);
-			}
+
 		}
 
 	}
@@ -267,25 +225,16 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		if (!msg.equals("")) {
 			chatArea.setCaretPosition(chatArea.getDocument().getLength());
 			chatField.setText("");
-
-			if (f.getChatRoom() == null) {
-				mainFrame.getReceiveThread().writeInt(Protocol.CHAT_ROOM_REQUEST);
-				String buffer = user.getId() + "::::" + partnerId + "," + user.getId() + "::::" + msg;
-				mainFrame.getReceiveThread().writeUTF(buffer);
-
-			} else {
-				mainFrame.getReceiveThread().writeInt(Protocol.MSG_REQUEST);
-				String buffer = f.getChatRoom().getRoomId() + "::::" + user.getId() + "::::" + partnerId + ","
-						+ user.getId() + "::::" + msg;
-				mainFrame.getReceiveThread().writeUTF(buffer);
-			}
+			mainFrame.getReceiveThread().writeInt(Protocol.MSG_REQUEST);
+			String buffer = mainFrame.getChatRoom(members).getRoomId() + "::::" + user.getId() + "::::" + members + "::::" + msg;
+			mainFrame.getReceiveThread().writeUTF(buffer);
 		}
 	}
 
 	public JTextArea getTextArea() {
 		return chatArea;
 	}
-	
+
 	public String getPartnerId() {
 		return partnerId;
 	}

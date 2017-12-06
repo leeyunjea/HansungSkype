@@ -112,7 +112,19 @@ public class Home extends JPanel {
 	}
 	
 	public FriendsListBoardPanel getFriendsListBoardPanel() {
-		return (FriendsListBoardPanel) selectedBoardPanel;
+		if(selectedBoardPanel instanceof FriendsListBoardPanel)
+			return (FriendsListBoardPanel) selectedBoardPanel;
+		else {
+			return null;
+		}
+	}
+	
+	public MultiChatBoardPanel getMultiChatBoardPanel() {
+		if(selectedBoardPanel instanceof FriendsListBoardPanel)
+			return (MultiChatBoardPanel) selectedBoardPanel;
+		else {
+			return null;
+		}
 	}
 	
 	public FriendsPanel getFriendsPanel() {
@@ -122,6 +134,12 @@ public class Home extends JPanel {
 	public ChatRoomsPanel getChatRoomsPanel() {
 		return chatRoomsPanel;
 	}
-	
+
+	public void setBoard(MultiChatBoardPanel multiChatBoardPanel) {
+		remove(selectedBoardPanel);
+		selectedBoardPanel = multiChatBoardPanel;
+		add(multiChatBoardPanel);
+		repaint();
+	}
 
 }

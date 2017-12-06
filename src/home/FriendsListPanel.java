@@ -49,6 +49,7 @@ public class FriendsListPanel extends JPanel {
 
 	public FriendsListPanel(MainFrame mainFrame, UserInfo user, boolean bookmark) {
 		// System.out.println("FriendsListPanel");
+		System.out.println(user.getId());
 		this.mainFrame = mainFrame;
 		this.user = user;
 		this.bookmark = bookmark;
@@ -114,12 +115,15 @@ public class FriendsListPanel extends JPanel {
 	public void menuLayout() {
 		popup = new JPopupMenu();
 		JMenuItem message = new JMenuItem("메세지 보내기");
+		JMenuItem invite = new JMenuItem("대화방 초대");
 		JMenuItem call = new JMenuItem("전화 걸기");
 		JMenuItem remove = new JMenuItem("친구 삭제");
 		message.addActionListener(new MenuActionListener());
+		invite.addActionListener(new MenuActionListener());
 		call.addActionListener(new MenuActionListener());
 		remove.addActionListener(new MenuActionListener());
 		popup.add(message);
+		popup.add(invite);
 		popup.add(call);
 		popup.add(remove);
 
@@ -198,6 +202,23 @@ public class FriendsListPanel extends JPanel {
 					System.out.println("전화 걸기");
 				} else if (e.getActionCommand().equals("메세지 보내기기")) {
 					System.out.println("메세지 보내기");
+				} else if (e.getActionCommand().equals("대화방 초대")) {
+					if(mainFrame.getHome().getBoard() instanceof FriendsListBoardPanel) {
+						UserInfo user1 = mainFrame.getUser(mainFrame.getId());
+						UserInfo user2 = mainFrame.getUser(((FriendsListBoardPanel)(mainFrame.getHome().getBoard())).getPartnerId());
+						UserInfo user3 = mainFrame.getUser(user.getId());
+						mainFrame.getReceiveThread().writeInt(Protocol.CHAT_ROOM_REQUEST);
+						String names[] = {user1.getId() ,user2.getId() ,user3.getId() };
+						Arrays.sort(names);
+						String name = names[0] + "," + names[1] + "," + names[2];
+						String buffer = user.getId() + "::::" + name + "::::" + user3.getId() + "님께서 " +
+						user2.getId() + "님과  " + user3.getId() + "님을 초대하였습니다." ;
+						mainFrame.getReceiveThread().writeUTF(buffer);
+					}
+					else {
+						
+					}
+					System.out.println("대화방 초대");
 				} else if (e.getActionCommand().equals("친구 삭제")) {
 					System.out.println("친구 삭제");
 				}

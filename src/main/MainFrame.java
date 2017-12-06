@@ -122,5 +122,14 @@ public class MainFrame extends JFrame {
 	public String getId() {
 		return user.getId();
 	}
+	
+	public UserInfo getUser(String id) {
+		for(int i=0; i<users.size(); i++) {
+			if(users.get(i).getId().equals(id)) {
+				return users.get(i);
+			}
+		}
+		return null;
+	}
 
 }

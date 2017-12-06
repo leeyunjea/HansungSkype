@@ -18,6 +18,8 @@ import database.UserInfo;
 import home.BoardPanel;
 import home.ChatRoomListPanel;
 import home.FriendsListBoardPanel;
+import home.FriendsListPanel;
+import home.MultiChatBoardPanel;
 import home.SmallMessageFrame;
 
 public class ReceiveThread extends Thread {
@@ -141,42 +143,27 @@ public class ReceiveThread extends Thread {
 						buffer = dataInputStream.readUTF();
 						debug.Debug.log(id + " ReceiveThread  Get : MSG RELAY buffer : " + buffer);
 						String buffers[] = buffer.split("::::");
-
-//						ChatRoomListPanel a = mainFrame.getHome().getChatRoomsPanel()
-//								.getChatRoomListPanel(Integer.parseInt(buffers[0]));
-//						if (a != null) {
-//							a.getChatRoom().getChatMessages().add(buffer);
-//							a.repaint();
-//						}
-						//À±Àç
 						ChatRoomListPanel a = mainFrame.getHome().getChatRoomsPanel()
 								.getChatRoomListPanel(Integer.parseInt(buffers[0]));
-//						if(mainFrame.getChatRoom(Integer.parseInt(buffers[0])) != null)
-//							mainFrame.getChatRoom(Integer.parseInt(buffers[0])).getChatMessages().add(buffer);
-//						
-//						if(rooms != null) {
-//							for(int i=0; i<rooms.size(); i++) {
-//								if(rooms.get(i).getRoomId() == Integer.parseInt(buffers[0]))
-//									if(rooms.get(i).getChatMessages() != null)
-//										rooms.get(i).getChatMessages().add(buffer);
-//							}
-//						}
-//						
+
 						if (a != null) {
 							a.getChatRoom().getChatMessages().add(buffer);
 							mainFrame.getHome().getChatRoomsPanel().setChatRooms();
 							a.invalidate();
 							a.repaint();
 						}
-						//
-
 						if (buffers[1].equals(mainFrame.getUser().getId())) {
 							String space = "";
 							for (int i = 0; i < 160; i++) {
 								space += " ";
 							}
 							space += buffers[3];
-							mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(space + "\n");
+							if(mainFrame.getHome().getFriendsListBoardPanel() != null)
+								mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(space + "\n");
+							else {
+								mainFrame.getHome().setBoard(new MultiChatBoardPanel(mainFrame, buffers[2] ,mainFrame.getChatRoom(buffers[2])));
+								//mainFrame.getHome().getMultiChatBoardPanel().getTextArea().append(space + "\n");
+							}
 						} else if (!(mainFrame.getHome().getBoard() instanceof FriendsListBoardPanel)) {
 							if (smallMessageFrame != null) {
 								smallMessageFrame.threadInterrupt();
