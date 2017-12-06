@@ -197,9 +197,9 @@ public class FriendsListPanel extends JPanel {
 		return user.isConnectionState();
 	}
 
-	public void setChatRoom(ChatRoom chatRoom) {
-		this.chatRoom = chatRoom;
-	}
+		public void setChatRoom(ChatRoom chatRoom) {
+			this.chatRoom = chatRoom;
+		}
 
 	public ChatRoom getChatRoom() {
 		return chatRoom;

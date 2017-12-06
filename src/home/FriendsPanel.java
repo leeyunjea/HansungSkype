@@ -154,4 +154,24 @@ public class FriendsPanel extends JScrollPane {
 			}
 		}
 	}
+
+	public void setFirstChatRoom(String ids, ChatRoom chatRoom) {
+		String id[] = ids.split(",");
+		if(id.length > 2)
+			return;
+		String partner;
+		System.out.println("FriendsPanel setChatRoom  ids = " + ids);
+		if(!id[0].equals(mainFrame.getUser().getId())) {
+			partner = id[0];
+		}
+		else 
+			partner = id[1];
+		debug.Debug.log("partner id : " + partner);
+		for(int i=0; i<friendsListPanels.size(); i++) {
+			if(friendsListPanels.get(i).getId().equals(partner)) {
+				debug.Debug.log("Friends Panel setChatRoom == friendsListPanels.get(i).getId()");
+				friendsListPanels.get(i).setChatRoom(chatRoom);
+			}
+		}
+	}
 }
