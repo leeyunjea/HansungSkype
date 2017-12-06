@@ -146,7 +146,7 @@ public class FriendsPanel extends JScrollPane {
 		}
 		else 
 			partner = id[1];
-		//debug.Debug.log("partner id : " + partner);
+		debug.Debug.log("partner id : " + partner);
 		for(int i=0; i<friendsListPanels.size(); i++) {
 			if(friendsListPanels.get(i).getId().equals(partner)) {
 				debug.Debug.log("Friends Panel setChatRoom == friendsListPanels.get(i).getId()");

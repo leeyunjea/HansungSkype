@@ -64,7 +64,6 @@ public class ReceiveThread extends Thread {
 		try {
 			String msg = id + "," + pw;
 			dataOutputStream.writeUTF(msg);
-			rooms = (Vector<ChatRoom>) objectInputStream.readObject();
 
 			if (dataInputStream.readInt() == Protocol.LOGIN_SUCCESS) {
 				debug.Debug.log("Login Success");
@@ -81,16 +80,35 @@ public class ReceiveThread extends Thread {
 				mainFrame.setUsers(users);
 				mainFrame.getLogin().loginSuccess(mainFrame.getUser());
 
-				if (rooms != null) {
-					for (int i = 0; i < rooms.size(); i++) {
-						String member = rooms.get(i).getNames();
-						debug.Debug.log(rooms.get(i).getNames());
-						mainFrame.getHome().getFriendsPanel().setFirstChatRoom(member, rooms.get(i));
-					}
-				}
+//				if (rooms != null) {
+//					for (int i = 0; i < rooms.size(); i++) {
+//						String member = rooms.get(i).getNames();
+//						debug.Debug.log(rooms.get(i).getNames());
+//						mainFrame.getHome().getFriendsPanel().setFirstChatRoom(member, rooms.get(i));
+//					}
+//				}
 
 				while (true) {
 					switch (dataInputStream.readInt()) {
+					case 0:
+						this.rooms = (Vector<ChatRoom>) objectInputStream.readObject();
+						for(int i=0; i<rooms.size(); i++) {
+							String names = rooms.get(i).getNames();
+							mainFrame.getHome().getFriendsPanel().setChatRoom(names, rooms.get(i));
+							System.out.println(rooms.get(i).getNames());
+							System.out.println(rooms.get(i).getChatMessages().toString());
+						}
+						
+						mainFrame.setChatRooms(rooms);
+						mainFrame.getHome().getChatRoomsPanel().setChatRoom(rooms);
+//						if (rooms != null) {
+//							for (int i = 0; i < rooms.size(); i++) {
+//								String member = rooms.get(i).getNames();
+//								debug.Debug.log(rooms.get(i).getNames());
+//								mainFrame.getHome().getFriendsPanel().setFirstChatRoom(member, rooms.get(i));
+//							}
+//						}
+						break;
 					case Protocol.CLIENT_LOGIN:
 						buffer = dataInputStream.readUTF();
 						InetAddress address = (InetAddress) objectInputStream.readObject();
@@ -183,6 +201,7 @@ public class ReceiveThread extends Thread {
 								if (Integer.toString(rooms.get(i).getRoomId()).equals(buffers[0])) {
 									// 윤재
 									rooms.get(i).getChatMessages().add(buffer);
+									System.out.println("버퍼에 추가함");
 									//debug.Debug.log("yunjae MSG_RELAY buffer = " + buffers);
 									//debug.Debug.log(
 											//"yunjae MSG_RELAY message : " + rooms.get(i).getChatMessages().toString());
@@ -190,15 +209,16 @@ public class ReceiveThread extends Thread {
 							}
 						}
 						//debug.Debug.log("yun " + id + " ReceiveThread  Get : MSG_RELAY   buffer : " + buffer);
-
 						break;
 					case Protocol.CONVERSATION_RESPONSE: // 대화 클릭할때 서버에서 메세지를
 															// 보내줌
 						debug.Debug.log("Get Conversation_Response!!!!!");
 						this.rooms = (Vector<ChatRoom>) objectInputStream.readObject();
-						mainFrame.setChatRooms(rooms);
+						mainFrame.setChatRooms(this.rooms);
 						for (int i = 0; i < rooms.size(); i++) {
 							debug.Debug.log("yun : " + rooms.get(i).getChatMessages().toString());
+							String names = rooms.get(i).getNames();
+							mainFrame.getHome().getFriendsPanel().setChatRoom(names, rooms.get(i));
 						}
 						// if (rooms != null) {
 						// for (int i = 0; i < rooms.size(); i++) {

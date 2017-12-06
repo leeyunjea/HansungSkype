@@ -109,10 +109,10 @@ public class MainFrame extends JFrame {
 		return null;
 	}
 
-	public ChatRoom getChatRoom(String name) {
+	public ChatRoom getChatRoom(String names) {
 		if (rooms != null) {
 			for (int i = 0; i < rooms.size(); i++) {
-				if (rooms.get(i).getNames().equals(name))
+				if (rooms.get(i).getNames().equals(names))
 					return rooms.get(i);
 			}
 		}

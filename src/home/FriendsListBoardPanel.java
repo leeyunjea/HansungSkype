@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.DataOutputStream;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -51,6 +52,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 	private String partnerId;
 	private UserInfo user;
 	private ChatRoom chatRoom;
+	private String names;
 
 	public FriendsListBoardPanel(MainFrame mainFrame, FriendsListPanel f, ChatRoom chatRoom) {
 		this.chatRoom = chatRoom;
@@ -60,6 +62,9 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		partnerName = f.getName();
 		partnerId = f.getId();
 		user = mainFrame.getUser();
+		String namearr[] = {user.getId(), partnerId};
+		Arrays.sort(namearr);
+		names = namearr[0] + "," + namearr[1];
 		setBounds(300, 0, mainFrame.WIDTH - 300, mainFrame.HEIGHT);
 		setLayout(null);
 		setBackground(Color.WHITE);
@@ -230,6 +235,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		if (!msg.equals("")) {
 			chatArea.setCaretPosition(chatArea.getDocument().getLength());
 			chatField.setText("");
+
 			if (f.getChatRoom() == null) {
 				mainFrame.getReceiveThread().writeInt(Protocol.CHAT_ROOM_REQUEST);
 				String buffer = user.getId() + "::::" + partnerId + "," + user.getId() + "::::" + msg;
