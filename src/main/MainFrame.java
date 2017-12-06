@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 700;
 	public static final String SERVER_IP = "127.0.0.1";
-	public static final int SERVER_PORT = 9999;
+	public static final int SERVER_PORT = 9000;
 	private Container contentPane;
 	private Home home;
 	private UserInfo user;
@@ -33,7 +33,7 @@ public class MainFrame extends JFrame {
 		super("HansungSkype");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		contentPane = getContentPane();
-		rooms = new Vector<ChatRoom>();
+//		rooms = new Vector<ChatRoom>();
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - WIDTH) / 2, (dim.height - HEIGHT) / 2);
 		setSize(WIDTH, HEIGHT);
@@ -93,6 +93,10 @@ public class MainFrame extends JFrame {
 
 	public Vector<ChatRoom> getChatRooms() {
 		return rooms;
+	}
+	
+	public void setChatRooms(Vector<ChatRoom> rooms) {
+		this.rooms = rooms;
 	}
 
 	public String getUserName(String id) {

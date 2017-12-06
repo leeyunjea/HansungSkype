@@ -154,10 +154,12 @@ public class FriendsListPanel extends JPanel {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			
 			mainFrame.getHome()
 					.setBoard(new FriendsListBoardPanel(mainFrame, (FriendsListPanel) e.getComponent(), chatRoom));
 			invalidate();
 			repaint();
+			
 		}
 
 	}

@@ -36,6 +36,7 @@ public class ReceiveThread extends Thread {
 	private SmallMessageFrame smallMessageFrame = null;
 
 	private String buffer;
+	Vector<ChatRoom> rooms;
 
 	public ReceiveThread(String id, String pw, MainFrame mainFrame) {
 		this.id = id;
@@ -104,42 +105,63 @@ public class ReceiveThread extends Thread {
 						debug.Debug.log(id + " ReceiveThread  Get : CHAT_ROOM_RESPONSE\nmember : " + member
 								+ " roomId : " + roomId);
 						mainFrame.getHome().getFriendsPanel().setChatRoom(member, chatRoom);
-						mainFrame.addRoom(chatRoom);
+						//mainFrame.addRoom(chatRoom);
 						break;
 					case Protocol.MSG_RELAY:
 						buffer = dataInputStream.readUTF();
 						String buffers[] = buffer.split("::::");
 						if (buffers[1].equals(mainFrame.getUser().getId())) {
 							String space = "";
-							for(int i=0; i<160; i++) {
+							for (int i = 0; i < 160; i++) {
 								space += " ";
 							}
 							space += buffers[3];
 							mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(space + "\n");
-						} else if(mainFrame.getHome().getBoard() instanceof BoardPanel) {
-							if(smallMessageFrame != null) {
+						} else if (mainFrame.getHome().getBoard() instanceof BoardPanel) {
+							if (smallMessageFrame != null) {
 								smallMessageFrame.threadInterrupt();
 								smallMessageFrame.dispose();
 							}
 							smallMessageFrame = new SmallMessageFrame(mainFrame, buffer, this);
 							debug.Debug.log("getFriendsListBoardPanel = null buffer = " + buffer);
-						}
-						else if(mainFrame.getHome().getFriendsListBoardPanel().getF().getId().equals(buffers[1])){
-							mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(buffers[1] + ": " +buffers[3] + "\n");
-						}
-						else {
+						} else if (mainFrame.getHome().getFriendsListBoardPanel().getF().getId().equals(buffers[1])) {
+							mainFrame.getHome().getFriendsListBoardPanel().getTextArea()
+									.append(buffers[1] + ": " + buffers[3] + "\n");
+						} else {
 							smallMessageFrame = new SmallMessageFrame(mainFrame, buffer, this);
+						}
+						debug.Debug.log("if문 밖 yunjae MSG_RELAY roomId = " + buffers[0]);
+						//System.out.println("yunjae rooms size = " + rooms.size());
+						if (rooms != null) {
+							System.out.println("yunjae rooms size = " + rooms.size());
+							for (int i = 0; i < rooms.size(); i++) {
+								if (Integer.toString(rooms.get(i).getRoomId()).equals(buffers[0])) {
+									//윤재
+									//rooms.get(i).addChatMessage(buffer);
+									//mainFrame.getHome().getChatRoomsPanel().getChatRoomListPanel(i).setLatestMessage(rooms.get(i));
+									debug.Debug.log("yunjae MSG_RELAY buffer = " + buffers);
+									debug.Debug.log("yunjae MSG_RELAY message : " + rooms.get(i).getChatMessages().toString());
+								}
+							}
 						}
 						debug.Debug.log("yun " + id + " ReceiveThread  Get : MSG_RELAY   buffer : " + buffer);
 						break;
-					case Protocol.CONVERSATION_RESPONSE:
+					case Protocol.CONVERSATION_RESPONSE: //대화 클릭할때 서버에서 메세지를 보내줌
 						debug.Debug.log("Get Conversation_Response!!!!!");
-						Vector<ChatRoom> rooms = (Vector<ChatRoom>) objectInputStream.readObject();
+						rooms = (Vector<ChatRoom>) objectInputStream.readObject();
+						for (int i = 0; i < rooms.size(); i++) {
+							debug.Debug.log("yun : " + rooms.get(i).getChatMessages().toString());
+						}
+						//윤재
+						mainFrame.setChatRooms(rooms);
+						mainFrame.getHome().getChatRoomsPanel().setChatRoom(rooms);
+						//
 						debug.Debug.log(rooms.toString() + "  rooms.size() : " + rooms.size());
+						
 						for (int i = 0; i < rooms.size(); i++) {
 							debug.Debug.log(
 									"member : " + rooms.get(i).getNames() + "  roomId : " + rooms.get(i).getRoomId());
-							debug.Debug.log(rooms.get(i).getChatMessages().toString());
+							debug.Debug.log("yun : " + rooms.get(i).getChatMessages().toString());
 						}
 						break;
 					}
@@ -202,7 +224,7 @@ public class ReceiveThread extends Thread {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setSmallMessageFrame() {
 		smallMessageFrame = null;
 	}

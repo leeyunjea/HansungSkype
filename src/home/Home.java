@@ -3,10 +3,12 @@ package home;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.Vector;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import chat.ChatRoom;
 import main.MainFrame;
 import database.UserInfo;
 
@@ -22,6 +24,7 @@ public class Home extends JPanel {
 	private JScrollPane scroll;
 	private FriendsListBoardPanel friendsListBoardPanel = null;
 	private JPanel selectedBoardPanel; 
+	private Vector<ChatRoom> rooms = null;
 	
 	private UserInfo user;
 	
@@ -59,6 +62,19 @@ public class Home extends JPanel {
 	public ProfilePanel getProfilePanel() {
 		return profilePanel;
 	}
+	
+	/*public void setChatRooms(Vector<ChatRoom> rooms) {
+		//this.rooms = rooms;
+		chatRoomsPanel.setChatRoom(rooms);
+	}*/
+	
+	public Vector<ChatRoom> getChatRooms() {
+		return rooms;
+	}
+	
+/*	public void setChatRoomsPanel(Vector<ChatRoom> rooms) {
+		chatRoomsPanel.setVectorRooms(rooms);
+	}*/
 	
 	public void selectedChatRooms() {
 		remove(friendsPanel);

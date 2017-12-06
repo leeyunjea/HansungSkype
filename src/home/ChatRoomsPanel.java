@@ -2,9 +2,12 @@ package home;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import chat.ChatRoom;
@@ -15,28 +18,117 @@ public class ChatRoomsPanel extends JPanel {
 
 	private MainFrame mainFrame;
 	private Vector<ChatRoom> rooms;
+	private Vector<ChatRoomListPanel> roomsPanels;
+	private int height = 30;
+	
+	private JLabel chatroomname;
 
 	public ChatRoomsPanel(MainFrame mainFrame) {
-		System.out.println("FriendsPanel");
+		System.out.println("ChaatRoomsPanel");
 		this.mainFrame = mainFrame;
+		this.rooms = mainFrame.getChatRooms();
 		setBounds(0, 200, 300, 500);
 		setBackground(new Color(240, 244, 248));
 		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, new Color(216, 229, 239)));
+		
+		roomsPanels = new Vector<ChatRoomListPanel>();
+		/*for(int i=0; i<rooms.size(); i++) {
+			System.out.println("yunjae rooms size = " + rooms.size());
+			ChatRoom room = rooms.get(i);
+			roomsPanels.add(new ChatRoomListPanel(mainFrame, room));
+		}*/
+		
+		UIinit();
 	}
 	
+	public void setChatRoom(Vector<ChatRoom> rooms) {
+		if(this.rooms != null)
+			this.rooms.removeAllElements();
+		roomsPanels.clear();
+		this.rooms = rooms;
+		drawListPanel(rooms);
+	}
 	
+	public void drawListPanel(Vector<ChatRoom> rooms) {
+		height = 30;
+		for(int i=0; i<rooms.size(); i++) {
+			ChatRoom room = rooms.get(i);
+			roomsPanels.add(new ChatRoomListPanel(mainFrame, room));
+		}
+		addChatRoomListPanels(roomsPanels);
+		invalidate();
+		repaint();
+	}
+	
+	public void UIinit() {
+		chatroomname = new JLabel("´ëÈ­¹æ");
+		chatroomname.setBounds(10, height, 300, 15);
+		add(chatroomname);
+		
+		
+		
+		//addChatRoomListPanels(roomsPanels);
+		repaint();
+		
+	}
+	//À±Àç
+	public ChatRoomListPanel getChatRoomListPanel(int i) {
+		return roomsPanels.get(i);
+	}
+	
+	public Vector<ChatRoom> getVectorChatRoom() {
+		return rooms;
+	}
+	public void addChatRoomListPanels(Vector<ChatRoomListPanel> roomsPanels) {
+		System.out.println(roomsPanels.size());
+		for (int i = 0; i < roomsPanels.size(); i++) {
+			roomsPanels.get(i).setBounds(0, height + 15, 300, 70);
+			roomsPanels.get(i).addMouseListener(new MouseListener() {
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+					
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					e.getComponent().setBackground(new Color(240, 244, 248));
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					e.getComponent().setBackground(new Color(199, 237, 252));
+				}
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+				}
+			});
+			add(roomsPanels.get(i));
+			height += 70;
+			System.out.println(" height = " + height);
+		}
+		invalidate();
+		repaint();
+	}
 	
 	@Override
 	public void print(Graphics g) {
 		super.print(g);
 	}
 	
+	
 	public void setChatRooms() {
+		if(rooms != null) 
+			this.rooms.removeAllElements();
 		mainFrame.getReceiveThread().conversationListRequest();
 //		rooms = (Vector<ChatRoom>)mainFrame.getReceiveThread().getConversation();
 //		debug.Debug.log("ChatRoomsPanel Send : CONVERSATION_REQUEST");
 	}
-
-	
 	
 }

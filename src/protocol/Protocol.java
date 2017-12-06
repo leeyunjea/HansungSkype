@@ -7,10 +7,10 @@ public class Protocol {
 	public static final int LOGIN_FAIL = 3; // 로그인 실패
 	public static final int CLIENT_LOGIN = 4; // 다른 클라이언트 로그인
 	public static final int CLIENT_LOGOUT = 5; // 다른 클라이언트 로그아웃
-	public static final int MSG_REQUEST = 6; // 메세지 요청
-	public static final int MSG_RELAY = 7; // 서버에서 목적지로 메세지 전달
-	public static final int CHAT_ROOM_REQUEST = 8; // 서버에서 목적지로 메세지 전달
-	public static final int CHAT_ROOM_RESPONSE = 9; // 서버에서 목적지로 메세지 전달
+	public static final int MSG_REQUEST = 6; // 메세지 요청 메세지 보내줘
+	public static final int MSG_RELAY = 7; // 서버에서 목적지로 메세지 전달 메세지 받았어
+	public static final int CHAT_ROOM_REQUEST = 8; // 서버에서 목적지로 메세지 전달  방 생성해줘
+	public static final int CHAT_ROOM_RESPONSE = 9; // 서버에서 목적지로 메세지 전달 방생성했어
 	public static final int MSG_ADD_USER_REQUEST = 9; // 서버에서 목적지로 메세지 전달
 	public static final int MSG_ADD_USER_RESPONSE = 10; // 서버에서 목적지로 메세지 전달
 	public static final int CONVERSATION_REQUEST = 11; // 서버에서 목적지로 메세지 전달

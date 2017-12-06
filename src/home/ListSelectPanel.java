@@ -14,7 +14,7 @@ import font.AppFont;
 import main.MainFrame;
 
 public class ListSelectPanel extends JPanel {
-	
+
 	private MainFrame mainFrame;
 	private JLabel friends;
 	private JLabel chatRooms;
@@ -31,10 +31,10 @@ public class ListSelectPanel extends JPanel {
 		setBounds(0, 150, 300, 50);
 		setBackground(new Color(240, 244, 248));
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, new Color(216, 229, 239)));
-		
+
 		UIInit();
 	}
-	
+
 	public void UIInit() {
 		selectedColor = new Color(7, 125, 180);
 		defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
@@ -58,7 +58,7 @@ public class ListSelectPanel extends JPanel {
 		// TODO Auto-generated method stub
 		super.paint(g);
 	}
-	
+
 	class ListSelectedListener implements MouseListener {
 
 		@Override
@@ -81,16 +81,18 @@ public class ListSelectPanel extends JPanel {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if(e.getSource().equals(friends) && selected != 1) {
+			if (e.getSource().equals(friends) && selected != 1) {
 				friends.setForeground(selectedColor);
 				chatRooms.setForeground(Color.BLACK);
 				selected = 1;
 				mainFrame.getHome().selectedFriends();
-			}
-			else if(e.getSource().equals(chatRooms) && selected != 2) {
+			} else if (e.getSource().equals(chatRooms) && selected != 2) {
 				chatRooms.setForeground(selectedColor);
 				friends.setForeground(Color.BLACK);
 				selected = 2;
+//				if (mainFrame.getHome().getChatRoomsPanel().getVectorChatRoom() != null) {
+//					mainFrame.getHome().getChatRoomsPanel().getVectorChatRoom().removeAllElements();
+//				}
 				mainFrame.getHome().getChatRoomsPanel().setChatRooms();
 				mainFrame.getHome().selectedChatRooms();
 				repaint();
@@ -100,9 +102,9 @@ public class ListSelectPanel extends JPanel {
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 	}
-	
+
 }
