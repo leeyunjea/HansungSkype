@@ -73,6 +73,7 @@ public class ReceiveThread extends Thread {
 
 				user = (UserInfo) objectInputStream.readObject();
 				users = (Vector<UserInfo>) objectInputStream.readObject();
+				
 				mainFrame.createUser(user);
 				mainFrame.setUsers(users);
 				mainFrame.getLogin().loginSuccess(mainFrame.getUser());
@@ -153,8 +154,9 @@ public class ReceiveThread extends Thread {
 							debug.Debug.log("yun : " + rooms.get(i).getChatMessages().toString());
 						}
 						//À±Àç
-						mainFrame.setChatRooms(rooms);
-						mainFrame.getHome().getChatRoomsPanel().setChatRoom(rooms);
+//						mainFrame.setChatRooms(rooms);
+//						mainFrame.getHome().getFriendsPanel().getFriendsListPanels().g
+//						mainFrame.getHome().getChatRoomsPanel().setChatRoom(rooms);
 						//
 						debug.Debug.log(rooms.toString() + "  rooms.size() : " + rooms.size());
 						
