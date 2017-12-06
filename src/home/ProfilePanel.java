@@ -26,7 +26,7 @@ public class ProfilePanel extends JPanel {
 	public ProfilePanel(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		user = mainFrame.getUser();
-		System.out.println("ProfilePanel");
+		//System.out.println("ProfilePanel");
 		setBounds(0, 0, 300, 100);
 		setLayout(null);
 		

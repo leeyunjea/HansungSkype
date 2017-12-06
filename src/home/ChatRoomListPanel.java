@@ -48,8 +48,8 @@ public class ChatRoomListPanel extends JPanel {
 		this.mainFrame = mainFrame;
 		this.room = room;
 		messages = room.getChatMessages();
-		debug.Debug.log(messages.toString());
-		System.out.println("messages = " + messages);
+		//debug.Debug.log(messages.toString());
+		//System.out.println("messages = " + messages);
 		names = room.getNames();
 		roomId = room.getRoomId();
 
@@ -78,7 +78,7 @@ public class ChatRoomListPanel extends JPanel {
 		message_str = messages.get(messages.size() - 1);
 		buffer = message_str.split("::::");
 		latestMessage = buffer[3];
-		System.out.println("yunjae message_str = " + message_str + "      latestMessage = "+latestMessage);
+		//System.out.println("yunjae message_str = " + message_str + "      latestMessage = "+latestMessage);
 		return latestMessage;
 
 	}
@@ -143,7 +143,7 @@ public class ChatRoomListPanel extends JPanel {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (e.getModifiers() == MouseEvent.BUTTON3_MASK) {
-				System.out.println(roomName.getText() + " 우클릭");
+				//System.out.println(roomName.getText() + " 우클릭");
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		}

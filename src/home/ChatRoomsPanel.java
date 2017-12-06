@@ -24,7 +24,7 @@ public class ChatRoomsPanel extends JPanel {
 	private JLabel chatroomname;
 
 	public ChatRoomsPanel(MainFrame mainFrame) {
-		System.out.println("ChaatRoomsPanel");
+		//System.out.println("ChaatRoomsPanel");
 		this.mainFrame = mainFrame;
 		this.rooms = mainFrame.getChatRooms();
 		setBounds(0, 200, 300, 500);
@@ -87,7 +87,7 @@ public class ChatRoomsPanel extends JPanel {
 		return rooms;
 	}
 	public void addChatRoomListPanels(Vector<ChatRoomListPanel> roomsPanels) {
-		System.out.println(roomsPanels.size());
+		//System.out.println(roomsPanels.size());
 		for (int i = 0; i < roomsPanels.size(); i++) {
 			roomsPanels.get(i).setBounds(0, height + 15, 300, 70);
 			roomsPanels.get(i).addMouseListener(new MouseListener() {

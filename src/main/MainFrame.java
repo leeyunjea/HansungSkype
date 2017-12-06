@@ -33,7 +33,7 @@ public class MainFrame extends JFrame {
 		super("HansungSkype");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		contentPane = getContentPane();
-//		rooms = new Vector<ChatRoom>();
+		// rooms = new Vector<ChatRoom>();
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((dim.width - WIDTH) / 2, (dim.height - HEIGHT) / 2);
 		setSize(WIDTH, HEIGHT);
@@ -84,9 +84,11 @@ public class MainFrame extends JFrame {
 	}
 
 	public ChatRoom getChatRoom(int RoomId) {
-		for (int i = 0; i < rooms.size(); i++) {
-			if (rooms.get(i).getRoomId() == RoomId)
-				return rooms.get(i);
+		if (rooms != null) {
+			for (int i = 0; i < rooms.size(); i++) {
+				if (rooms.get(i).getRoomId() == RoomId)
+					return rooms.get(i);
+			}
 		}
 		return null;
 	}
@@ -94,7 +96,7 @@ public class MainFrame extends JFrame {
 	public Vector<ChatRoom> getChatRooms() {
 		return rooms;
 	}
-	
+
 	public void setChatRooms(Vector<ChatRoom> rooms) {
 		this.rooms = rooms;
 	}
@@ -105,6 +107,20 @@ public class MainFrame extends JFrame {
 				return users.get(i).getName();
 		}
 		return null;
+	}
+
+	public ChatRoom getChatRoom(String name) {
+		if (rooms != null) {
+			for (int i = 0; i < rooms.size(); i++) {
+				if (rooms.get(i).getNames().equals(name))
+					return rooms.get(i);
+			}
+		}
+		return null;
+	}
+	
+	public String getId() {
+		return user.getId();
 	}
 
 }

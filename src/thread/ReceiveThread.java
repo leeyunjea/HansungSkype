@@ -37,7 +37,7 @@ public class ReceiveThread extends Thread {
 	private SmallMessageFrame smallMessageFrame = null;
 
 	private String buffer;
-	Vector<ChatRoom> rooms;
+	private Vector<ChatRoom> rooms;
 
 	public ReceiveThread(String id, String pw, MainFrame mainFrame) {
 		this.id = id;
@@ -121,6 +121,7 @@ public class ReceiveThread extends Thread {
 						break;
 					case Protocol.MSG_RELAY:
 						buffer = dataInputStream.readUTF();
+						debug.Debug.log(id + " ReceiveThread  Get : MSG RELAY buffer : " + buffer);
 						String buffers[] = buffer.split("::::");
 
 //						ChatRoomListPanel a = mainFrame.getHome().getChatRoomsPanel()
@@ -132,6 +133,17 @@ public class ReceiveThread extends Thread {
 						//윤재
 						ChatRoomListPanel a = mainFrame.getHome().getChatRoomsPanel()
 								.getChatRoomListPanel(Integer.parseInt(buffers[0]));
+//						if(mainFrame.getChatRoom(Integer.parseInt(buffers[0])) != null)
+//							mainFrame.getChatRoom(Integer.parseInt(buffers[0])).getChatMessages().add(buffer);
+//						
+//						if(rooms != null) {
+//							for(int i=0; i<rooms.size(); i++) {
+//								if(rooms.get(i).getRoomId() == Integer.parseInt(buffers[0]))
+//									if(rooms.get(i).getChatMessages() != null)
+//										rooms.get(i).getChatMessages().add(buffer);
+//							}
+//						}
+//						
 						if (a != null) {
 							a.getChatRoom().getChatMessages().add(buffer);
 							mainFrame.getHome().getChatRoomsPanel().setChatRooms();
@@ -147,20 +159,20 @@ public class ReceiveThread extends Thread {
 							}
 							space += buffers[3];
 							mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(space + "\n");
-						} else if (mainFrame.getHome().getBoard() instanceof BoardPanel) {
+						} else if (!(mainFrame.getHome().getBoard() instanceof FriendsListBoardPanel)) {
 							if (smallMessageFrame != null) {
 								smallMessageFrame.threadInterrupt();
 								smallMessageFrame.dispose();
 							}
 							smallMessageFrame = new SmallMessageFrame(mainFrame, buffer, this);
-							debug.Debug.log("getFriendsListBoardPanel = null buffer = " + buffer);
+							//debug.Debug.log("getFriendsListBoardPanel = null buffer = " + buffer);
 						} else if (mainFrame.getHome().getFriendsListBoardPanel().getF().getId().equals(buffers[1])) {
 							mainFrame.getHome().getFriendsListBoardPanel().getTextArea()
 									.append(buffers[1] + ": " + buffers[3] + "\n");
 						} else {
 							smallMessageFrame = new SmallMessageFrame(mainFrame, buffer, this);
 						}
-						debug.Debug.log("if문 밖 yunjae MSG_RELAY roomId = " + buffers[0]);
+						//debug.Debug.log("if문 밖 yunjae MSG_RELAY roomId = " + buffers[0]);
 						// System.out.println("yunjae rooms size = " +
 						// rooms.size());
 
@@ -171,20 +183,20 @@ public class ReceiveThread extends Thread {
 								if (Integer.toString(rooms.get(i).getRoomId()).equals(buffers[0])) {
 									// 윤재
 									rooms.get(i).getChatMessages().add(buffer);
-									debug.Debug.log("yunjae MSG_RELAY buffer = " + buffers);
-									debug.Debug.log(
-											"yunjae MSG_RELAY message : " + rooms.get(i).getChatMessages().toString());
+									//debug.Debug.log("yunjae MSG_RELAY buffer = " + buffers);
+									//debug.Debug.log(
+											//"yunjae MSG_RELAY message : " + rooms.get(i).getChatMessages().toString());
 								}
 							}
-
 						}
-						debug.Debug.log("yun " + id + " ReceiveThread  Get : MSG_RELAY   buffer : " + buffer);
+						//debug.Debug.log("yun " + id + " ReceiveThread  Get : MSG_RELAY   buffer : " + buffer);
 
 						break;
 					case Protocol.CONVERSATION_RESPONSE: // 대화 클릭할때 서버에서 메세지를
 															// 보내줌
 						debug.Debug.log("Get Conversation_Response!!!!!");
 						this.rooms = (Vector<ChatRoom>) objectInputStream.readObject();
+						mainFrame.setChatRooms(rooms);
 						for (int i = 0; i < rooms.size(); i++) {
 							debug.Debug.log("yun : " + rooms.get(i).getChatMessages().toString());
 						}
@@ -201,12 +213,12 @@ public class ReceiveThread extends Thread {
 						// mainFrame.get;
 						mainFrame.getHome().getChatRoomsPanel().setChatRoom(rooms);
 						//
-						debug.Debug.log(rooms.toString() + "  rooms.size() : " + rooms.size());
+						//debug.Debug.log(rooms.toString() + "  rooms.size() : " + rooms.size());
 
 						for (int i = 0; i < rooms.size(); i++) {
-							debug.Debug.log(
-									"member : " + rooms.get(i).getNames() + "  roomId : " + rooms.get(i).getRoomId());
-							debug.Debug.log("yun : " + rooms.get(i).getChatMessages().toString());
+							//debug.Debug.log(
+							//		"member : " + rooms.get(i).getNames() + "  roomId : " + rooms.get(i).getRoomId());
+							//debug.Debug.log("yun : " + rooms.get(i).getChatMessages().toString());
 						}
 						break;
 					}

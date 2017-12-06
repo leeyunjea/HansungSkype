@@ -56,7 +56,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		this.chatRoom = chatRoom;
 		this.mainFrame = mainFrame;
 		this.f = f;
-		
+
 		partnerName = f.getName();
 		partnerId = f.getId();
 		user = mainFrame.getUser();
@@ -67,6 +67,15 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		System.out.println("FriendsListBoardPanel " + "f = " + f.getName());
 
 		UIinit();
+		
+		if (chatRoom != null) {
+			if (chatRoom.getChatMessages() != null) {
+				for(int i=0; i<chatRoom.getChatMessages().size(); i++) {
+					chatArea.append(chatRoom.getChatMessages().get(i) + "\n");
+				}
+				
+			}
+		}
 
 		invalidate();
 		repaint();
@@ -125,7 +134,8 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		chatArea.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(216, 229, 239)));
 		chatArea.setEditable(false);
 
-		JScrollPane scroll = new JScrollPane(chatArea,  JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane scroll = new JScrollPane(chatArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setBounds(10, 140, mainFrame.WIDTH - 325, 450);
 		scroll.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(216, 229, 239)));
 		scroll.setBackground(Color.WHITE);
@@ -159,7 +169,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		send.addMouseListener(friendsMouseListener);
 		add(send);
 	}
-	
+
 	public FriendsListPanel getF() {
 		return f;
 	}
@@ -189,9 +199,11 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 				chatField.setText("");
 			}
 			if (e.getSource() == send) {
-				/*chatArea.append(chatField.getText() + "\n");
-				chatArea.setCaretPosition(chatArea.getDocument().getLength());
-				chatField.setText(" 여기에 메세지 입력");*/
+				/*
+				 * chatArea.append(chatField.getText() + "\n");
+				 * chatArea.setCaretPosition(chatArea.getDocument().getLength())
+				 * ; chatField.setText(" 여기에 메세지 입력");
+				 */
 				sendMessage();
 			}
 			if (e.getSource() == voice) {
@@ -212,31 +224,28 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		sendMessage();
 
 	}
-	
+
 	public void sendMessage() {
 		String msg = chatField.getText();
 		if (!msg.equals("")) {
-			//chatArea.append(msg + "\n");
 			chatArea.setCaretPosition(chatArea.getDocument().getLength());
 			chatField.setText("");
 			if (f.getChatRoom() == null) {
 				mainFrame.getReceiveThread().writeInt(Protocol.CHAT_ROOM_REQUEST);
 				String buffer = user.getId() + "::::" + partnerId + "," + user.getId() + "::::" + msg;
 				mainFrame.getReceiveThread().writeUTF(buffer);
-				
-			}
-			else {
+
+			} else {
 				mainFrame.getReceiveThread().writeInt(Protocol.MSG_REQUEST);
-				String buffer = f.getChatRoom().getRoomId() + "::::" + user.getId() + "::::" + partnerId + "," + user.getId() + "::::" + msg;
+				String buffer = f.getChatRoom().getRoomId() + "::::" + user.getId() + "::::" + partnerId + ","
+						+ user.getId() + "::::" + msg;
 				mainFrame.getReceiveThread().writeUTF(buffer);
 			}
 		}
 	}
-	
+
 	public JTextArea getTextArea() {
 		return chatArea;
 	}
-	
-	
 
 }

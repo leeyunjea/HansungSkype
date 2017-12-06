@@ -29,7 +29,7 @@ public class MenuPanel extends JPanel {
 
 	public MenuPanel(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
-		System.out.println("MenuPanel");
+		//System.out.println("MenuPanel");
 		setLayout(null);
 		setBounds(0, 100, 300, 50);
 		setBackground(new Color(240, 244, 248));

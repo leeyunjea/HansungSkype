@@ -41,8 +41,8 @@ public class VoiceStandbyPanel extends JPanel {
 		setLayout(null);
 		setBounds(0, 0, MainFrame.WIDTH, MainFrame.HEIGHT);
 		//setBackground(new Color(178,230,251));
-		System.out.println("f name = " + f.getName());
-		System.out.println("p name = " + p.getMyName());
+	//	System.out.println("f name = " + f.getName());
+		//System.out.println("p name = " + p.getMyName());
 		
 		UIinit();
 		

@@ -25,7 +25,7 @@ public class ListSelectPanel extends JPanel {
 	private Color selectedColor;
 
 	public ListSelectPanel(MainFrame mainFrame) {
-		System.out.println("ListSelectPanel");
+		//System.out.println("ListSelectPanel");
 		this.mainFrame = mainFrame;
 		setLayout(null);
 		setBounds(0, 150, 300, 50);
