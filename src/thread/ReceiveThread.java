@@ -11,6 +11,8 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Vector;
 
+import javax.swing.plaf.multi.MultiFileChooserUI;
+
 import chat.ChatRoom;
 import main.MainFrame;
 import protocol.Protocol;
@@ -82,34 +84,36 @@ public class ReceiveThread extends Thread {
 				mainFrame.setUsers(users);
 				mainFrame.getLogin().loginSuccess(mainFrame.getUser());
 
-//				if (rooms != null) {
-//					for (int i = 0; i < rooms.size(); i++) {
-//						String member = rooms.get(i).getNames();
-//						debug.Debug.log(rooms.get(i).getNames());
-//						mainFrame.getHome().getFriendsPanel().setFirstChatRoom(member, rooms.get(i));
-//					}
-//				}
+				// if (rooms != null) {
+				// for (int i = 0; i < rooms.size(); i++) {
+				// String member = rooms.get(i).getNames();
+				// debug.Debug.log(rooms.get(i).getNames());
+				// mainFrame.getHome().getFriendsPanel().setFirstChatRoom(member,
+				// rooms.get(i));
+				// }
+				// }
 
 				while (true) {
 					switch (dataInputStream.readInt()) {
 					case 0:
 						this.rooms = (Vector<ChatRoom>) objectInputStream.readObject();
-						for(int i=0; i<rooms.size(); i++) {
+						for (int i = 0; i < rooms.size(); i++) {
 							String names = rooms.get(i).getNames();
 							mainFrame.getHome().getFriendsPanel().setChatRoom(names, rooms.get(i));
 							System.out.println(rooms.get(i).getNames());
 							System.out.println(rooms.get(i).getChatMessages().toString());
 						}
-						
+
 						mainFrame.setChatRooms(rooms);
 						mainFrame.getHome().getChatRoomsPanel().setChatRoom(rooms);
-//						if (rooms != null) {
-//							for (int i = 0; i < rooms.size(); i++) {
-//								String member = rooms.get(i).getNames();
-//								debug.Debug.log(rooms.get(i).getNames());
-//								mainFrame.getHome().getFriendsPanel().setFirstChatRoom(member, rooms.get(i));
-//							}
-//						}
+						// if (rooms != null) {
+						// for (int i = 0; i < rooms.size(); i++) {
+						// String member = rooms.get(i).getNames();
+						// debug.Debug.log(rooms.get(i).getNames());
+						// mainFrame.getHome().getFriendsPanel().setFirstChatRoom(member,
+						// rooms.get(i));
+						// }
+						// }
 						break;
 					case Protocol.CLIENT_LOGIN:
 						buffer = dataInputStream.readUTF();
@@ -136,7 +140,9 @@ public class ReceiveThread extends Thread {
 						ChatRoom chatRoom = new ChatRoom(member, roomId);
 						debug.Debug.log(id + " ReceiveThread  Get : CHAT_ROOM_RESPONSE\nmember : " + member
 								+ " roomId : " + roomId);
-						mainFrame.getHome().getFriendsPanel().setChatRoom(member, chatRoom);
+						String members[] = member.split(",");
+						if (members.length == 2)
+							mainFrame.getHome().getFriendsPanel().setChatRoom(member, chatRoom);
 						// mainFrame.addRoom(chatRoom);
 						break;
 					case Protocol.MSG_RELAY:
@@ -158,28 +164,40 @@ public class ReceiveThread extends Thread {
 								space += " ";
 							}
 							space += buffers[3];
-							if(mainFrame.getHome().getFriendsListBoardPanel() != null)
+							if (mainFrame.getHome().getFriendsListBoardPanel() != null)
 								mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(space + "\n");
-							else {
-								mainFrame.getHome().setBoard(new MultiChatBoardPanel(mainFrame, buffers[2] ,mainFrame.getChatRoom(buffers[2])));
-								//mainFrame.getHome().getMultiChatBoardPanel().getTextArea().append(space + "\n");
+							else if (mainFrame.getHome().getMultiChatBoardPanel() != null) {
+								// mainFrame.getHome().setBoard(new
+								// MultiChatBoardPanel(mainFrame, buffers[2]
+								// ,mainFrame.getChatRoom(buffers[2])));
+								mainFrame.getHome().getMultiChatBoardPanel().getTextArea().append(space + "\n");
 							}
-						} else if (!(mainFrame.getHome().getBoard() instanceof FriendsListBoardPanel)) {
+						}
+						
+						else if ( mainFrame.getHome().getBoard() instanceof MultiChatBoardPanel
+								&& mainFrame.getHome().getMultiChatBoardPanel() != null) {
+							mainFrame.getHome().getMultiChatBoardPanel().getTextArea()
+									.append(buffers[1] + ": " + buffers[3] + "\n");
+						} 
+						
+						else if (!(mainFrame.getHome().getBoard() instanceof FriendsListBoardPanel)) {
 							if (smallMessageFrame != null) {
 								smallMessageFrame.threadInterrupt();
 								smallMessageFrame.dispose();
 							}
 							smallMessageFrame = new SmallMessageFrame(mainFrame, buffer, this);
-							//debug.Debug.log("getFriendsListBoardPanel = null buffer = " + buffer);
+							// debug.Debug.log("getFriendsListBoardPanel = null
+							// buffer = " + buffer);
 						} else if (mainFrame.getHome().getFriendsListBoardPanel().getF().getId().equals(buffers[1])) {
 							mainFrame.getHome().getFriendsListBoardPanel().getTextArea()
 									.append(buffers[1] + ": " + buffers[3] + "\n");
-						} else {
+						} 
+						
+						
+						
+						else {
 							smallMessageFrame = new SmallMessageFrame(mainFrame, buffer, this);
 						}
-						//debug.Debug.log("if문 밖 yunjae MSG_RELAY roomId = " + buffers[0]);
-						// System.out.println("yunjae rooms size = " +
-						// rooms.size());
 
 						if (rooms != null) {
 
@@ -189,13 +207,9 @@ public class ReceiveThread extends Thread {
 									// 윤재
 									rooms.get(i).getChatMessages().add(buffer);
 									System.out.println("버퍼에 추가함");
-									//debug.Debug.log("yunjae MSG_RELAY buffer = " + buffers);
-									//debug.Debug.log(
-											//"yunjae MSG_RELAY message : " + rooms.get(i).getChatMessages().toString());
 								}
 							}
 						}
-						//debug.Debug.log("yun " + id + " ReceiveThread  Get : MSG_RELAY   buffer : " + buffer);
 						break;
 					case Protocol.CONVERSATION_RESPONSE: // 대화 클릭할때 서버에서 메세지를
 															// 보내줌
@@ -220,12 +234,15 @@ public class ReceiveThread extends Thread {
 						// mainFrame.get;
 						mainFrame.getHome().getChatRoomsPanel().setChatRoom(rooms);
 						//
-						//debug.Debug.log(rooms.toString() + "  rooms.size() : " + rooms.size());
+						// debug.Debug.log(rooms.toString() + " rooms.size() : "
+						// + rooms.size());
 
 						for (int i = 0; i < rooms.size(); i++) {
-							//debug.Debug.log(
-							//		"member : " + rooms.get(i).getNames() + "  roomId : " + rooms.get(i).getRoomId());
-							//debug.Debug.log("yun : " + rooms.get(i).getChatMessages().toString());
+							// debug.Debug.log(
+							// "member : " + rooms.get(i).getNames() + " roomId
+							// : " + rooms.get(i).getRoomId());
+							// debug.Debug.log("yun : " +
+							// rooms.get(i).getChatMessages().toString());
 						}
 						break;
 					}

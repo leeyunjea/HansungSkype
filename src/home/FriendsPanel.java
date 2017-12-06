@@ -43,7 +43,7 @@ public class FriendsPanel extends JScrollPane {
 		this.mainFrame = mainFrame;
 		friendsVector = mainFrame.getUser().getFriends();
 		setLayout(null);
-		//setLayout(new FlowLayout());
+		// setLayout(new FlowLayout());
 		setBounds(0, 200, 300, 500);
 		setBackground(new Color(240, 244, 248));
 		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, new Color(216, 229, 239)));
@@ -56,24 +56,25 @@ public class FriendsPanel extends JScrollPane {
 		 */
 
 		friendsListPanels = new Vector<FriendsListPanel>();
-		for(int i=0; i<friendsVector.size(); i++) {
+		for (int i = 0; i < friendsVector.size(); i++) {
 			UserInfo user = friendsVector.get(i);
 			friendsListPanels.add(new FriendsListPanel(mainFrame, user, false));
 		}
 
 		UIinit();
-		//System.out.println("FriendsPanel");
+		// System.out.println("FriendsPanel");
 	}
-	
-	//¿±¿Á
+
+	// ¿±¿Á
 	public Vector<FriendsListPanel> getFriendsListPanels() {
 		return friendsListPanels;
 	}
+
 	//
 	public void UIinit() {
 		bookmark = new JLabel("¡Ò∞‹√£±‚");
-		//bookmark.setLocation(10, 10);
-		//bookmark.setSize(300, 15);
+		// bookmark.setLocation(10, 10);
+		// bookmark.setSize(300, 15);
 		// bookmark.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		// add(bookmark);
 
@@ -93,7 +94,7 @@ public class FriendsPanel extends JScrollPane {
 				f.get(i).setBounds(0, height, 300, 70);
 				add(f.get(i));
 				height += 70;
-			//	System.out.println(" height = " + height);
+				// System.out.println(" height = " + height);
 			}
 		}
 		invalidate();
@@ -107,12 +108,12 @@ public class FriendsPanel extends JScrollPane {
 
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					
+
 				}
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					
+
 				}
 
 				@Override
@@ -131,45 +132,47 @@ public class FriendsPanel extends JScrollPane {
 			});
 			add(f.get(i));
 			height += 70;
-			//System.out.println(" height = " + height);
+			// System.out.println(" height = " + height);
 		}
 		invalidate();
 		repaint();
 	}
-	
+
 	public void setChatRoom(String ids, ChatRoom chatRoom) {
 		String id[] = ids.split(",");
-		String partner;
-		//System.out.println("FriendsPanel setChatRoom  ids = " + ids);
-		if(!id[0].equals(mainFrame.getUser().getId())) {
-			partner = id[0];
-		}
-		else 
-			partner = id[1];
-		debug.Debug.log("partner id : " + partner);
-		for(int i=0; i<friendsListPanels.size(); i++) {
-			if(friendsListPanels.get(i).getId().equals(partner)) {
-				debug.Debug.log("Friends Panel setChatRoom == friendsListPanels.get(i).getId()");
-				friendsListPanels.get(i).setChatRoom(chatRoom);
+		System.out.println("members length : " + id.length);
+		if (id.length == 2) {
+			String partner;
+			// System.out.println("FriendsPanel setChatRoom ids = " + ids);
+			if (!id[0].equals(mainFrame.getUser().getId())) {
+				partner = id[0];
+			} else
+				partner = id[1];
+			debug.Debug.log("partner id : " + partner);
+			for (int i = 0; i < friendsListPanels.size(); i++) {
+				if (friendsListPanels.get(i).getId().equals(partner)) {
+					debug.Debug.log("Friends Panel setChatRoom == friendsListPanels.get(i).getId()");
+					friendsListPanels.get(i).setChatRoom(chatRoom);
+				}
 			}
 		}
 	}
 
 	public void setFirstChatRoom(String ids, ChatRoom chatRoom) {
 		String id[] = ids.split(",");
-		if(id.length > 2)
+		if (id.length > 2)
 			return;
 		String partner;
-		//System.out.println("FriendsPanel setChatRoom  ids = " + ids);
-		if(!id[0].equals(mainFrame.getUser().getId())) {
+		// System.out.println("FriendsPanel setChatRoom ids = " + ids);
+		if (!id[0].equals(mainFrame.getUser().getId())) {
 			partner = id[0];
-		}
-		else 
+		} else
 			partner = id[1];
-		//debug.Debug.log("partner id : " + partner);
-		for(int i=0; i<friendsListPanels.size(); i++) {
-			if(friendsListPanels.get(i).getId().equals(partner)) {
-		//		debug.Debug.log("Friends Panel setChatRoom == friendsListPanels.get(i).getId()");
+		// debug.Debug.log("partner id : " + partner);
+		for (int i = 0; i < friendsListPanels.size(); i++) {
+			if (friendsListPanels.get(i).getId().equals(partner)) {
+				// debug.Debug.log("Friends Panel setChatRoom ==
+				// friendsListPanels.get(i).getId()");
 				friendsListPanels.get(i).setChatRoom(chatRoom);
 			}
 		}

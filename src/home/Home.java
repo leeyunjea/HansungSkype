@@ -120,7 +120,7 @@ public class Home extends JPanel {
 	}
 	
 	public MultiChatBoardPanel getMultiChatBoardPanel() {
-		if(selectedBoardPanel instanceof FriendsListBoardPanel)
+		if(selectedBoardPanel instanceof MultiChatBoardPanel)
 			return (MultiChatBoardPanel) selectedBoardPanel;
 		else {
 			return null;
