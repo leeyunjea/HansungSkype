@@ -34,5 +34,9 @@ public class ChatRoom implements Serializable{
 	public String getNames() {
 		return names;
 	}
+	
+	public void setNames(String names) {
+		this.names = names;
+	}
 
 }

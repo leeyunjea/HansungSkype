@@ -70,7 +70,7 @@ public class ChatRoomListPanel extends JPanel {
 		repaint();
 	}
 
-	public String getName() {
+	public String getNames() {
 		return room.getNames();
 	}
 
@@ -206,4 +206,15 @@ public class ChatRoomListPanel extends JPanel {
 	public void setLatestMessage(String msg) {
 		this.latestMessage = msg;
 	}
+	
+	public void setNames(String names) {
+		this.names = names;
+		roomName.setText(names);
+		repaint();
+	}
+	
+	public void setChatRoom(ChatRoom room) {
+		this.room = room;
+	}
+	
 }

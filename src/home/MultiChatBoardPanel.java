@@ -47,18 +47,19 @@ public class MultiChatBoardPanel extends JPanel implements ActionListener {
 	private JTextField chatField;
 	private FriendsMouseListener friendsMouseListener = new FriendsMouseListener();
 	private int count = 0; // ¾ß¸Å
-	private String partnerName;
 	private String partnerId;
 	private UserInfo user;
 	private ChatRoom chatRoom;
 	private String names;
 	private String members;
+	private int roomId;
 
 	public MultiChatBoardPanel(MainFrame mainFrame, String members, ChatRoom chatRoom) {
 		this.chatRoom = chatRoom;
 		this.mainFrame = mainFrame;
 		this.members = members;
 		user = mainFrame.getUser();
+		this.roomId = chatRoom.getRoomId();
 		setBounds(300, 0, mainFrame.WIDTH - 300, mainFrame.HEIGHT);
 		setLayout(null);
 		setBackground(Color.WHITE);
@@ -226,7 +227,7 @@ public class MultiChatBoardPanel extends JPanel implements ActionListener {
 			chatArea.setCaretPosition(chatArea.getDocument().getLength());
 			chatField.setText("");
 			mainFrame.getReceiveThread().writeInt(Protocol.MSG_REQUEST);
-			String buffer = mainFrame.getChatRoom(members).getRoomId() + "::::" + user.getId() + "::::" + members + "::::" + msg;
+			String buffer = mainFrame.getChatRoom(members).getRoomId() + "::::" + user.getId() + "::::" + chatRoom.getNames() + "::::" + msg;
 			mainFrame.getReceiveThread().writeUTF(buffer);
 		}
 	}
@@ -238,5 +239,29 @@ public class MultiChatBoardPanel extends JPanel implements ActionListener {
 	public String getPartnerId() {
 		return partnerId;
 	}
+	
+	public void setChatRoom(ChatRoom chatRoom) {
+		this.chatRoom = chatRoom;
+	}
+	
+	public void setNames(String names) {
+		this.names = names;
+		name.setText(names);
+		this.members = names;
+		stateMessage.setText(names);
+		invalidate();
+		repaint();
+	}
 
+	public int getRoomId() {
+		return roomId;
+	}
+	
+	public ChatRoom getChatRoom() {
+		return chatRoom;
+	}
+	
+	public String getNames() {
+		return names;
+	}
 }

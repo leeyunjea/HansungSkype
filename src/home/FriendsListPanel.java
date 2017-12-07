@@ -197,28 +197,38 @@ public class FriendsListPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+
 			if (user.isConnectionState()) {
 				if (e.getActionCommand().equals("전화 걸기")) {
 					System.out.println("전화 걸기");
 				} else if (e.getActionCommand().equals("메세지 보내기기")) {
 					System.out.println("메세지 보내기");
 				} else if (e.getActionCommand().equals("대화방 초대")) {
-					if(mainFrame.getHome().getBoard() instanceof FriendsListBoardPanel) {
-						UserInfo user1 = mainFrame.getUser(mainFrame.getId());
-						UserInfo user2 = mainFrame.getUser(((FriendsListBoardPanel)(mainFrame.getHome().getBoard())).getPartnerId());
-						UserInfo user3 = mainFrame.getUser(user.getId());
-						mainFrame.getReceiveThread().writeInt(Protocol.CHAT_ROOM_REQUEST);
-						String names[] = {user1.getId() ,user2.getId() ,user3.getId() };
-						Arrays.sort(names);
-						String name = names[0] + "," + names[1] + "," + names[2];
-						String buffer = user.getId() + "::::" + name + "::::" + user3.getId() + "님께서 " +
-						user2.getId() + "님과  " + user3.getId() + "님을 초대하였습니다." ;
-						mainFrame.getReceiveThread().writeUTF(buffer);
+					UserInfo user3 = mainFrame.getUser(user.getId());
+					if (mainFrame.getHome().getBoard() instanceof FriendsListBoardPanel) {
+						UserInfo user1 = mainFrame.getUser(mainFrame.getId()); // 홍성문
+						UserInfo user2 = mainFrame
+								.getUser(((FriendsListBoardPanel) (mainFrame.getHome().getBoard())).getPartnerId()); // 이윤재
+						String nameArr[] = { user1.getId(), user2.getId(), user3.getId() };
+						Arrays.sort(nameArr);
+						String name = nameArr[0] + "," + nameArr[1] + "," + nameArr[2];
+						if (mainFrame.getChatRoom(name) == null) {
+							mainFrame.getReceiveThread().writeInt(Protocol.CHAT_ROOM_REQUEST);
+							String buffer = user.getId() + "::::" + name + "::::" + user1.getId() + "님께서 "
+									+ user2.getId() + "님과  " + user3.getId() + "님을 초대하였습니다.";
+							mainFrame.getReceiveThread().writeUTF(buffer);
+						}
+					} else if (mainFrame.getHome().getBoard() instanceof MultiChatBoardPanel) {
+						if (!((MultiChatBoardPanel) mainFrame.getHome().getBoard()).getChatRoom().getNames()
+								.contains(user3.getId())) {
+							mainFrame.getReceiveThread().writeInt(Protocol.MSG_ADD_USER_REQUEST);
+							String members = ((MultiChatBoardPanel) mainFrame.getHome().getBoard()).getChatRoom().getNames();
+							mainFrame.getReceiveThread().writeUTF(members);
+							mainFrame.getReceiveThread().writeUTF(user3.getId());
+							System.out.println("대화방 초대  id : " + user3.getId() + "  members : " + members);
+						}
 					}
-					else {
-						
-					}
-					System.out.println("대화방 초대");
+					System.out.println("대화방 초대  id : " + user3.getId());
 				} else if (e.getActionCommand().equals("친구 삭제")) {
 					System.out.println("친구 삭제");
 				}

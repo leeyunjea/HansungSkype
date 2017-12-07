@@ -86,12 +86,15 @@ public class ListSelectPanel extends JPanel {
 				chatRooms.setForeground(Color.BLACK);
 				selected = 1;
 				mainFrame.getHome().selectedFriends();
+				invalidate();
+				repaint();
 			} else if (e.getSource().equals(chatRooms) && selected != 2) {
 				chatRooms.setForeground(selectedColor);
 				friends.setForeground(Color.BLACK);
 				selected = 2;
 				mainFrame.getHome().getChatRoomsPanel().setChatRooms();
 				mainFrame.getHome().selectedChatRooms();
+				invalidate();
 				repaint();
 			}
 		}

@@ -75,10 +75,23 @@ public class ChatRoomsPanel extends JPanel {
 		
 	}
 	//À±Àç
-	public ChatRoomListPanel getChatRoomListPanel(int id) {
+	public JPanel getChatRoomListPanel(int id) {
 		for(int i=0; i<chatRoomListPanels.size(); i++) {
-			if(chatRoomListPanels.get(i).getRoomId() == id)
-				return chatRoomListPanels.get(i);
+			if(chatRoomListPanels.get(i) instanceof ChatRoomListPanel)
+				if(((ChatRoomListPanel)chatRoomListPanels.get(i)).getRoomId() == id)
+					return chatRoomListPanels.get(i);
+//			if(chatRoomListPanels.get(i) instanceof MultiChatBoardPanel)
+//				if(((MultiChatBoardPanel)chatRoomListPanels.get(i)).getRoomId() == id)
+//					return chatRoomListPanels.get(i);
+		}
+		return null;
+	}
+	
+	public JPanel getChatRoomListPanel(String id) {
+		for(int i=0; i<chatRoomListPanels.size(); i++) {
+				if(((ChatRoomListPanel)chatRoomListPanels.get(i)).getNames().equals(id))
+					return chatRoomListPanels.get(i);
+
 		}
 		return null;
 	}
@@ -137,6 +150,10 @@ public class ChatRoomsPanel extends JPanel {
 		this.rooms = mainFrame.getChatRooms();
 //		rooms = (Vector<ChatRoom>)mainFrame.getReceiveThread().getConversation();
 //		debug.Debug.log("ChatRoomsPanel Send : CONVERSATION_REQUEST");
+	}
+	
+	public Vector<ChatRoomListPanel> getChatRoomListPanels() {
+		return chatRoomListPanels;
 	}
 	
 }

@@ -33,7 +33,6 @@ public class FriendsPanel extends JScrollPane {
 	private JScrollPane scroll;
 	private Home home;
 
-	// private Vector<BookMarkListPanel> boookmarkPanels;
 	private Vector<FriendsListPanel> friendsListPanels;
 	private Object hover = null;
 	private Vector<UserInfo> friendsVector;
@@ -43,7 +42,6 @@ public class FriendsPanel extends JScrollPane {
 		this.mainFrame = mainFrame;
 		friendsVector = mainFrame.getUser().getFriends();
 		setLayout(null);
-		// setLayout(new FlowLayout());
 		setBounds(0, 200, 300, 500);
 		setBackground(new Color(240, 244, 248));
 		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, new Color(216, 229, 239)));
@@ -62,7 +60,6 @@ public class FriendsPanel extends JScrollPane {
 		}
 
 		UIinit();
-		// System.out.println("FriendsPanel");
 	}
 
 	// À±Àç
@@ -73,12 +70,6 @@ public class FriendsPanel extends JScrollPane {
 	//
 	public void UIinit() {
 		bookmark = new JLabel("Áñ°ÜÃ£±â");
-		// bookmark.setLocation(10, 10);
-		// bookmark.setSize(300, 15);
-		// bookmark.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		// add(bookmark);
-
-		// addBookMarkList(friendsPanels);
 
 		friends = new JLabel("¸ðµÎ");
 		friends.setBounds(10, height, 300, 15);
@@ -94,7 +85,6 @@ public class FriendsPanel extends JScrollPane {
 				f.get(i).setBounds(0, height, 300, 70);
 				add(f.get(i));
 				height += 70;
-				// System.out.println(" height = " + height);
 			}
 		}
 		invalidate();
@@ -132,26 +122,32 @@ public class FriendsPanel extends JScrollPane {
 			});
 			add(f.get(i));
 			height += 70;
-			// System.out.println(" height = " + height);
 		}
 		invalidate();
 		repaint();
 	}
 
 	public void setChatRoom(String ids, ChatRoom chatRoom) {
-		String id[] = ids.split(",");
+		String id[] = chatRoom.getNames().split(",");
+		System.out.println("chatRoom.getNames() : " + chatRoom.getNames());
 		System.out.println("members length : " + id.length);
 		if (id.length == 2) {
 			String partner;
-			// System.out.println("FriendsPanel setChatRoom ids = " + ids);
 			if (!id[0].equals(mainFrame.getUser().getId())) {
 				partner = id[0];
 			} else
 				partner = id[1];
-			debug.Debug.log("partner id : " + partner);
 			for (int i = 0; i < friendsListPanels.size(); i++) {
 				if (friendsListPanels.get(i).getId().equals(partner)) {
 					debug.Debug.log("Friends Panel setChatRoom == friendsListPanels.get(i).getId()");
+					friendsListPanels.get(i).setChatRoom(chatRoom);
+				}
+			}
+		} else {
+			debug.Debug.log("FriendsPanel -> setChatRoom    names : " + chatRoom.getNames());
+			for (int i = 0; i < friendsListPanels.size(); i++) {
+				if (friendsListPanels.get(i).getId().equals(chatRoom.getNames())) {
+					debug.Debug.log("Friends Panel setChatRoom == friendsListPanels.get(i).getId()   multi");
 					friendsListPanels.get(i).setChatRoom(chatRoom);
 				}
 			}
@@ -163,16 +159,12 @@ public class FriendsPanel extends JScrollPane {
 		if (id.length > 2)
 			return;
 		String partner;
-		// System.out.println("FriendsPanel setChatRoom ids = " + ids);
 		if (!id[0].equals(mainFrame.getUser().getId())) {
 			partner = id[0];
 		} else
 			partner = id[1];
-		// debug.Debug.log("partner id : " + partner);
 		for (int i = 0; i < friendsListPanels.size(); i++) {
 			if (friendsListPanels.get(i).getId().equals(partner)) {
-				// debug.Debug.log("Friends Panel setChatRoom ==
-				// friendsListPanels.get(i).getId()");
 				friendsListPanels.get(i).setChatRoom(chatRoom);
 			}
 		}
