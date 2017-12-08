@@ -100,9 +100,9 @@ public class ReceiveThread extends Thread {
 						this.rooms = (Vector<ChatRoom>) objectInputStream.readObject();
 						for (int i = 0; i < rooms.size(); i++) {
 							String names = rooms.get(i).getNames();
-							mainFrame.getHome().getFriendsPanel().setChatRoom(names, rooms.get(i));
 							System.out.println(rooms.get(i).getNames());
 							System.out.println(rooms.get(i).getChatMessages().toString());
+							mainFrame.getHome().getFriendsPanel().setChatRoom(names, rooms.get(i));
 						}
 
 						mainFrame.setChatRooms(rooms);
@@ -167,7 +167,7 @@ public class ReceiveThread extends Thread {
 							space += buffers[3];
 							if (mainFrame.getHome().getFriendsListBoardPanel() != null)
 								mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(space + "\n");
-							else if (mainFrame.getHome().getMultiChatBoardPanel() != null) {
+							else if (mainFrame.getHome().getMultiChatBoardPanel() != null ) {
 								// mainFrame.getHome().setBoard(new
 								// MultiChatBoardPanel(mainFrame, buffers[2]
 								// ,mainFrame.getChatRoom(buffers[2])));
@@ -187,7 +187,7 @@ public class ReceiveThread extends Thread {
 								smallMessageFrame.dispose();
 							}
 							smallMessageFrame = new SmallMessageFrame(mainFrame, buffer, this);
-						} else if (mainFrame.getHome().getFriendsListBoardPanel().getF().getId().equals(buffers[1])) {
+						} else if (mainFrame.getHome().getFriendsListBoardPanel().getF().getId().equals(buffers[3])) {
 							mainFrame.getHome().getFriendsListBoardPanel().getTextArea()
 									.append(buffers[1] + ": " + buffers[3] + "\n");
 						}

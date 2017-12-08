@@ -129,7 +129,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		name = new JLabel();
 		name.setText(f.getName());
 		name.setFont(appFont.getNameFont());
-		name.setBounds(110, 40, 100, 30);
+		name.setBounds(110, 40, 300, 30);
 		add(name);
 
 		stateMessage = new JLabel();
