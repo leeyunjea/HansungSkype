@@ -14,6 +14,8 @@ import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.plaf.multi.MultiFileChooserUI;
 
+import audio.AudioReceiver;
+import audio.AudioServer;
 import chat.ChatRoom;
 import main.MainFrame;
 import protocol.Protocol;
@@ -253,10 +255,15 @@ public class ReceiveThread extends Thread {
 						dataOutputStream.writeUTF(id);
 						break;
 					case Protocol.CALL_RESPONSE:
-						/*A
-						user1.dataOutputStreamWriteInt(Protocol.CALL_RESPONSE);
-						user1.dataOutputStreamWriteInt(ports.get(1));
-						user1.objectOutputStreamWriteInt(responseServers.get(0).getUserAddress());*/
+						int writePort = dataInputStream.readInt();
+						int readPort = dataInputStream.readInt();
+						InetAddress partnerAddress = (InetAddress) objectInputStream.readObject();
+						debug.Debug.log("ReceiveThread  Get : CALL_RESPONSE   writePort : " + writePort + "  readPort : " + readPort + "   address : " + partnerAddress.getHostAddress());
+ 						AudioServer audioServer = new AudioServer(partnerAddress, writePort);
+ 						AudioReceiver audioReceiver = new AudioReceiver(readPort);
+ 						audioServer.start();
+						audioReceiver.start();
+						break;
 					}
 				}
 			} else if (dataInputStream.readInt() == Protocol.LOGIN_FAIL) {

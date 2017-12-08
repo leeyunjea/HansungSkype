@@ -1,18 +1,16 @@
 package audio;
 
-import java.io.ByteArrayOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.InterfaceAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
 public class AudioServer extends Thread {
@@ -30,22 +28,23 @@ public class AudioServer extends Thread {
 
 	private DatagramSocket sendSocket;
 	private DatagramPacket sendPacket;
-	InetAddress address = null;
 
 	boolean stopaudioCapture = false;
-	AudioFormat adFormat;
-	TargetDataLine targetDataLine;
-	AudioInputStream InputStream;
-	SourceDataLine sourceLine;
+	private AudioFormat adFormat;
+	private TargetDataLine targetDataLine;
 	private AudioInputStream audioInputStream;
 	private byte buffer[] = new byte[FRAME_SIZE];
 
+	private DatagramPacket sendPackets[];
 	public AudioServer(InetAddress address, int port) {
-		debug.Debug.log("AudioSender : Create");
+		debug.Debug.log("AudioSender Create      Address : " + address.getHostName() + "   port : " + port);
 		adFormat = getAudioFormat();
 		DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, adFormat);
 		try {
 			sendSocket = new DatagramSocket();
+			sendPacket = new DatagramPacket(buffer, FRAME_SIZE, address, port);
+			DatagramPacket tempPackets[] = { sendPacket };
+			sendPackets = tempPackets;
 		} catch (SocketException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -69,13 +68,19 @@ public class AudioServer extends Thread {
 		try {
 			int readSize;
 			targetDataLine.start();
+			sendPacket = new DatagramPacket(buffer, buffer.length);
 			while (true) {
 				readSize = audioInputStream.read(buffer, 0, FRAME_SIZE);
+				for(int i=0; i<sendPackets.length; i++) {
+					sendPacket.setData(buffer, 0, buffer.length);
+					sendSocket.send(sendPacket);
+					debug.Debug.log("sendPakcets["+i+"] Send");
+				}
 				debug.Debug.log("Audio Write	Index : " + writeIndex);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 }
