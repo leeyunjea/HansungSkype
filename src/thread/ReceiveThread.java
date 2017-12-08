@@ -252,6 +252,11 @@ public class ReceiveThread extends Thread {
 						dataOutputStream.writeInt(Protocol.CONVERSATION_REQUEST);
 						dataOutputStream.writeUTF(id);
 						break;
+					case Protocol.CALL_RESPONSE:
+						/*A
+						user1.dataOutputStreamWriteInt(Protocol.CALL_RESPONSE);
+						user1.dataOutputStreamWriteInt(ports.get(1));
+						user1.objectOutputStreamWriteInt(responseServers.get(0).getUserAddress());*/
 					}
 				}
 			} else if (dataInputStream.readInt() == Protocol.LOGIN_FAIL) {

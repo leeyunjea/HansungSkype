@@ -15,7 +15,11 @@ public class Protocol {
 	public static final int MSG_ADD_USER_RESPONSE = 11; // 서버에서 목적지로 메세지 전달
 	public static final int CONVERSATION_REQUEST = 12; // 서버에서 목적지로 메세지 전달
 	public static final int CONVERSATION_RESPONSE = 13; // 서버에서 목적지로 메세지 전달
-	public static final int CONVERSATION = 14; // 목적지에서 서버로 메세지 수신 완료4
+	public static final int CONVERSATION = 14; // 목적지에서 서버로 메세지 수신 완료
+	public static final int CALL_REQUEST = 15; // 전화 요청
+	public static final int CALL_RESPONSE = 16;
+	public static final int CALL_ADD_REQUEST = 17;
+	
 //	public static final int STATE_REQUEST = 8; // 상태메세지 변경 요청
 //	public static final int STATE_RESPONSE = 9; // 상태메세지 변경 응답
 //	public static final int STATE_FAIL = 10; // 상태메세지 변경 실패

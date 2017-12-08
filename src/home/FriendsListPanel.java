@@ -200,6 +200,8 @@ public class FriendsListPanel extends JPanel {
 
 			if (user.isConnectionState()) {
 				if (e.getActionCommand().equals("전화 걸기")) {
+					mainFrame.getReceiveThread().writeInt(Protocol.CALL_REQUEST);
+					mainFrame.getReceiveThread().writeUTF(user.getId());
 					System.out.println("전화 걸기");
 				} else if (e.getActionCommand().equals("메세지 보내기기")) {
 					System.out.println("메세지 보내기");
