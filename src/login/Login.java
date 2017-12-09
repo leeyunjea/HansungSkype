@@ -29,7 +29,7 @@ public class Login extends JPanel{
 	private JLabel pw_lb;
 	private JTextField id;
 	private JTextField pw;
-	private ImageIcon logImg = new ImageIcon("images/hansungskype.png");
+	private ImageIcon logImg = new ImageIcon("images/ball.gif");
 	private ImageIcon backgroundImg = new ImageIcon("images/sky2.jpg");
 	private AppFont appFont;
 	private LoginMouseListener loginMouseListener;
@@ -54,7 +54,7 @@ public class Login extends JPanel{
 		loginMouseListener = new LoginMouseListener();
 		
 		id = new JTextField();
-		id.setBounds(350, 290, 330, 30);
+		id.setBounds(600, 500, 300, 30);
 		id.setBorder(BorderFactory.createLineBorder(new Color(216, 229, 239)));
 		//id.setBackground(new Color(225, 246, 251));
 		id.setText("아이디를 입력하세요.");
@@ -64,7 +64,7 @@ public class Login extends JPanel{
 		add(id);
 		
 		pw = new JTextField();
-		pw.setBounds(350, 360, 330, 30);
+		pw.setBounds(600, 550, 300, 30);
 		pw.setBorder(BorderFactory.createLineBorder(new Color(216, 229, 239)));
 		pw.setText("비밀번호를 입력하세요.");
 		pw.setForeground(Color.LIGHT_GRAY);
@@ -74,7 +74,7 @@ public class Login extends JPanel{
 		
 		
 		loginBtn = new JButton("Sign in");
-		loginBtn.setBounds(460, 450, 100, 40);
+		loginBtn.setBounds(910, 550, 70, 30);
 		loginBtn.setBackground(new Color(199, 237, 252));
 		loginBtn.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, new Color(216, 229, 239)));
 		loginBtn.addActionListener(new ActionListener() {
@@ -98,11 +98,12 @@ public class Login extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(logImg.getImage(), 320, 40, 400, 150, null);
+		//g.drawImage(logImg.getImage(), 320, 40, 400, 150, null);
+		g.drawImage(logImg.getImage(), 0, 0, mainFrame.WIDTH, mainFrame.HEIGHT, null);
 		
-		g.setColor(Color.BLACK);
-		g.setFont(new Font("Jokeman", Font.BOLD, 50));
-		g.drawString("로그인", 430, 240);
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Serif", Font.BOLD, 70));
+		g.drawString("HansungSkype", 30, 100);
 		
 		repaint();
 		

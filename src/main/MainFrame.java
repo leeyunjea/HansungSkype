@@ -12,6 +12,7 @@ import chat.ChatRoom;
 import home.BoardPanel;
 import home.Home;
 import login.Login;
+import sns.SNS;
 import thread.ReceiveThread;
 import database.UserInfo;
 
@@ -28,6 +29,7 @@ public class MainFrame extends JFrame {
 	private Login login;
 	private ReceiveThread receiveThread = null;
 	private Vector<ChatRoom> rooms;
+	private Vector<SNS> snss;
 
 	public MainFrame() {
 		super("HansungSkype");
@@ -130,6 +132,15 @@ public class MainFrame extends JFrame {
 			}
 		}
 		return null;
+	}
+	
+	public Vector<SNS> getListSNS() {
+		//return receiveThread.getListSNS();
+		return snss;
+	}
+	
+	public void setListSNS(Vector<SNS> snss) {
+		this.snss = snss;
 	}
 
 }

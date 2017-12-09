@@ -62,7 +62,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		partnerName = f.getName();
 		partnerId = f.getId();
 		user = mainFrame.getUser();
-		String namearr[] = {user.getId(), partnerId};
+		String namearr[] = { user.getId(), partnerId };
 		Arrays.sort(namearr);
 		names = namearr[0] + "," + namearr[1];
 		setBounds(300, 0, mainFrame.WIDTH - 300, mainFrame.HEIGHT);
@@ -72,21 +72,41 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		System.out.println("FriendsListBoardPanel " + "f = " + f.getName());
 
 		UIinit();
-		
+
+		/*
+		 * if (chatRoom != null) { if (chatRoom.getChatMessages() != null) {
+		 * for(int i=0; i<chatRoom.getChatMessages().size(); i++) {
+		 * chatArea.append(chatRoom.getChatMessages().get(i) + "\n"); }
+		 * 
+		 * } }
+		 */
+
+		// À±Àç
 		if (chatRoom != null) {
 			if (chatRoom.getChatMessages() != null) {
-				for(int i=0; i<chatRoom.getChatMessages().size(); i++) {
-					chatArea.append(chatRoom.getChatMessages().get(i) + "\n");
+				for (int i = 0; i < chatRoom.getChatMessages().size(); i++) {
+					String buffers[] = chatRoom.getChatMessages().get(i).split("::::");
+					if (buffers[1].equals(mainFrame.getUser().getId())) {
+						String space = "";
+						for (int j = 0; j < 160; j++) {
+							space += " ";
+						}
+						space += buffers[3];
+						chatArea.append(space + "\n");
+					} else {
+						chatArea.append(buffers[1] + ": " + buffers[3] + "\n");
+					}
 				}
-				
+
 			}
 		}
+		//
 
 		invalidate();
 		repaint();
 
 	}
-	
+
 	public FriendsListBoardPanel(MainFrame mainFrame, String members, ChatRoom chatRoom) {
 		this.chatRoom = chatRoom;
 		this.mainFrame = mainFrame;
@@ -94,7 +114,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		partnerName = f.getName();
 		partnerId = f.getId();
 		user = mainFrame.getUser();
-		String namearr[] = {user.getId(), partnerId};
+		String namearr[] = { user.getId(), partnerId };
 		Arrays.sort(namearr);
 		names = namearr[0] + "," + namearr[1];
 		setBounds(300, 0, mainFrame.WIDTH - 300, mainFrame.HEIGHT);
@@ -104,13 +124,22 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 		System.out.println("FriendsListBoardPanel " + "f = " + f.getName());
 
 		UIinit();
+
+		/*if (chatRoom != null) {
+			if (chatRoom.getChatMessages() != null) {
+				for (int i = 0; i < chatRoom.getChatMessages().size(); i++) {
+					chatArea.append(chatRoom.getChatMessages().get(i) + "\n");
+				}
+
+			}
+		}*/
 		
 		if (chatRoom != null) {
 			if (chatRoom.getChatMessages() != null) {
-				for(int i=0; i<chatRoom.getChatMessages().size(); i++) {
-					chatArea.append(chatRoom.getChatMessages().get(i) + "\n");
+				for (int i = 0; i < chatRoom.getChatMessages().size(); i++) {
+					String buffers[] = chatRoom.getChatMessages().get(i).split("::::");
 				}
-				
+
 			}
 		}
 
@@ -285,7 +314,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 	public JTextArea getTextArea() {
 		return chatArea;
 	}
-	
+
 	public String getPartnerId() {
 		return partnerId;
 	}

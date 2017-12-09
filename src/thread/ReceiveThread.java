@@ -19,6 +19,7 @@ import audio.AudioServer;
 import chat.ChatRoom;
 import main.MainFrame;
 import protocol.Protocol;
+import sns.SNS;
 import database.UserInfo;
 import home.BoardPanel;
 import home.ChatRoomListPanel;
@@ -45,6 +46,7 @@ public class ReceiveThread extends Thread {
 
 	private String buffer;
 	private Vector<ChatRoom> rooms;
+	private Vector<SNS> snss;
 
 	public ReceiveThread(String id, String pw, MainFrame mainFrame) {
 		this.id = id;
@@ -109,6 +111,18 @@ public class ReceiveThread extends Thread {
 
 						mainFrame.setChatRooms(rooms);
 						mainFrame.getHome().getChatRoomsPanel().setChatRoom(rooms);
+						break;
+					case 1004:
+						snss = (Vector<SNS>) objectInputStream.readObject();
+						if (snss != null) {
+							mainFrame.setListSNS(snss);
+							mainFrame.getHome().getBoardPanel().setListSNS(snss);
+							debug.Debug.log("1004 snss size = " + snss.size());
+							for (int i = 0; i < snss.size(); i++) {
+								System.out.println("À±Àç : snss writer = " + snss.get(i).getWriter() + "msg = "
+										+ snss.get(i).getMsg());
+							}
+						}
 						break;
 					case Protocol.CLIENT_LOGIN:
 						buffer = dataInputStream.readUTF();
@@ -264,6 +278,18 @@ public class ReceiveThread extends Thread {
  						audioServer.start();
 						audioReceiver.start();
 						break;
+					case Protocol.SNS_RESPONSE:
+						int check = dataInputStream.readInt();
+						debug.Debug.log("SNS_RESPONSE check = " + check);
+						Vector<SNS> s = (Vector<SNS>) objectInputStream.readObject();
+						debug.Debug.log("SNS_RESPONSE s size! = " + s.size() + "  s.toStrig" + s.toString());
+						mainFrame.setListSNS(s);
+						mainFrame.getHome().getBoardPanel().setListSNS(s);
+						for (int i = 0; i < s.size(); i++) {
+							System.out.println("SNS_RESPONSE À±Àç : s writer = " + s.get(i).getWriter() + "msg = "
+									+ s.get(i).getMsg());
+						}
+						break;
 					}
 				}
 			} else if (dataInputStream.readInt() == Protocol.LOGIN_FAIL) {
@@ -286,6 +312,10 @@ public class ReceiveThread extends Thread {
 			debug.Debug.log("Close Error");
 		}
 		interrupt();
+	}
+	
+	public Vector<SNS> getListSNS() {
+		return snss;
 	}
 
 	public UserInfo getUser(String id) {
@@ -327,6 +357,14 @@ public class ReceiveThread extends Thread {
 
 	public void setSmallMessageFrame() {
 		smallMessageFrame = null;
+	}
+	
+	public ObjectOutputStream getObjectOutputStream() {
+		return objectOutputStream;
+	}
+
+	public DataOutputStream getDataOutputStream() {
+		return dataOutputStream;
 	}
 
 }

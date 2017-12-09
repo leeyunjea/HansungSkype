@@ -95,9 +95,9 @@ public class FriendsListPanel extends JPanel {
 	public void UIInit() {
 		appFont = new AppFont();
 		// image = new ImageIcon("images/add-iloveimg-resized.png");
-		image = new ImageIcon("images/add-iloveimg-resized.png");
+		image = new ImageIcon(getImg());
 		imagelb = new JLabel(image, JLabel.CENTER);
-		imagelb.setBounds(10, 18, 30, 30);
+		imagelb.setBounds(10, 18, 40, 40);
 		add(imagelb);
 
 		namelb = new JLabel(getName());
@@ -110,6 +110,31 @@ public class FriendsListPanel extends JPanel {
 		stateMessagelb.setBounds(60, 42, 200, 15);
 		add(stateMessagelb);
 
+	}
+	
+	public String getImg() {
+		String img = null;
+		switch(user.getName()) {
+		case "È«¼º¹®":
+			img = "images/userone.png";
+			break;
+		case "ÀÌÀ±Àç":
+			img = "images/usertwo.png";
+			break;
+		case "¹é½ÂÈ¯":
+			img = "images/userthree.png";
+			break;
+		case "ÀÌÅÂÀ±":
+			img = "images/userfour.png";
+			break;
+		case "¹ÎÅÂ¼º":
+			img = "images/userfive.png";
+			break;
+		case "ÃÖ¿ø±Õ":
+			img = "images/usersix.png";
+			break;
+		}
+		return img;
 	}
 
 	public void menuLayout() {

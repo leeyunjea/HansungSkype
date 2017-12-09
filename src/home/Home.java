@@ -111,6 +111,10 @@ public class Home extends JPanel {
 		return selectedBoardPanel;
 	}
 	
+	public BoardPanel getBoardPanel() {
+		return boardPanel;
+	}
+	
 	public FriendsListBoardPanel getFriendsListBoardPanel() {
 		if(selectedBoardPanel instanceof FriendsListBoardPanel)
 			return (FriendsListBoardPanel) selectedBoardPanel;

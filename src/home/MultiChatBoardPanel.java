@@ -68,14 +68,41 @@ public class MultiChatBoardPanel extends JPanel implements ActionListener {
 
 		UIinit();
 
+		/*
+		 * if (chatRoom != null) { if (chatRoom.getChatMessages() != null) { for
+		 * (int i = 0; i < chatRoom.getChatMessages().size(); i++) {
+		 * chatArea.append(chatRoom.getChatMessages().get(i) + "\n"); }
+		 * 
+		 * } }
+		 */
+
+		// 윤재
 		if (chatRoom != null) {
 			if (chatRoom.getChatMessages() != null) {
 				for (int i = 0; i < chatRoom.getChatMessages().size(); i++) {
-					chatArea.append(chatRoom.getChatMessages().get(i) + "\n");
+					String buffers[] = chatRoom.getChatMessages().get(i).split("::::");
+					String spaces[] = chatRoom.getChatMessages().get(i).split(" ");
+					System.out.println(
+							"MultiChatBoardPanel chatRoom.getChatMessages() = " + chatRoom.getChatMessages().get(i));
+
+					if (buffers[3].contains("초대하였습니다.")) {
+						chatArea.append(buffers[1] + ": " + buffers[3] + "\n");
+					} else if (buffers[1].equals(mainFrame.getUser().getId())) {
+						String space = "";
+						for (int j = 0; j < 160; j++) {
+							space += " ";
+						}
+						space += buffers[3];
+						chatArea.append(space + "\n");
+					} else {
+						chatArea.append(buffers[1] + ": " + buffers[3] + "\n");
+					}
+
 				}
 
 			}
 		}
+		//
 
 		invalidate();
 		repaint();
@@ -227,7 +254,8 @@ public class MultiChatBoardPanel extends JPanel implements ActionListener {
 			chatArea.setCaretPosition(chatArea.getDocument().getLength());
 			chatField.setText("");
 			mainFrame.getReceiveThread().writeInt(Protocol.MSG_REQUEST);
-			String buffer = mainFrame.getChatRoom(members).getRoomId() + "::::" + user.getId() + "::::" + chatRoom.getNames() + "::::" + msg;
+			String buffer = mainFrame.getChatRoom(members).getRoomId() + "::::" + user.getId() + "::::"
+					+ chatRoom.getNames() + "::::" + msg;
 			mainFrame.getReceiveThread().writeUTF(buffer);
 		}
 	}
@@ -239,11 +267,11 @@ public class MultiChatBoardPanel extends JPanel implements ActionListener {
 	public String getPartnerId() {
 		return partnerId;
 	}
-	
+
 	public void setChatRoom(ChatRoom chatRoom) {
 		this.chatRoom = chatRoom;
 	}
-	
+
 	public void setNames(String names) {
 		this.names = names;
 		name.setText(names);
@@ -256,11 +284,11 @@ public class MultiChatBoardPanel extends JPanel implements ActionListener {
 	public int getRoomId() {
 		return roomId;
 	}
-	
+
 	public ChatRoom getChatRoom() {
 		return chatRoom;
 	}
-	
+
 	public String getNames() {
 		return names;
 	}
