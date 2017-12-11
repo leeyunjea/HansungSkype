@@ -22,7 +22,7 @@ public class AudioServer extends Thread {
 	public final int NUMBER_OF_BYTES_IN_FRAME = 4; // Number of bytes in
 	public final float NUMBER_OF_FRAME_PER_SECOND = 44100.0F; // Number
 	public final static int FRAME_SIZE = (int) AUDIO_SAMPLERATE * NUMBER_OF_CHANNELS * NUMBER_OF_BITS_IN_CHANNEL
-			/ Byte.SIZE / 50 * 6 + 1600;
+			/ Byte.SIZE / 50 * 5;
 	private static final boolean ENDIAN = false;
 	public static int writeIndex; // write buffer index
 
@@ -71,11 +71,11 @@ public class AudioServer extends Thread {
 			sendPacket = new DatagramPacket(buffer, buffer.length);
 			while (true) {
 				readSize = audioInputStream.read(buffer, 0, FRAME_SIZE);
-				for(int i=0; i<sendPackets.length; i++) {
+//				for(int i=0; i<sendPackets.length; i++) {
 					sendPacket.setData(buffer, 0, buffer.length);
 					sendSocket.send(sendPacket);
-					debug.Debug.log("sendPakcets["+i+"] Send");
-				}
+//					debug.Debug.log("sendPakcets["+i+"] Send");
+//				}
 				debug.Debug.log("Audio Write	Index : " + writeIndex);
 			}
 		} catch (Exception e) {

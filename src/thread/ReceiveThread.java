@@ -269,14 +269,14 @@ public class ReceiveThread extends Thread {
 						dataOutputStream.writeUTF(id);
 						break;
 					case Protocol.CALL_RESPONSE:
-						int writePort = dataInputStream.readInt();
 						int readPort = dataInputStream.readInt();
+						int writePort = dataInputStream.readInt();
 						InetAddress partnerAddress = (InetAddress) objectInputStream.readObject();
 						debug.Debug.log("ReceiveThread  Get : CALL_RESPONSE   writePort : " + writePort + "  readPort : " + readPort + "   address : " + partnerAddress.getHostAddress());
+						AudioReceiver audioReceiver = new AudioReceiver(readPort);
  						AudioServer audioServer = new AudioServer(partnerAddress, writePort);
- 						AudioReceiver audioReceiver = new AudioReceiver(readPort);
+ 						audioReceiver.start();
  						audioServer.start();
-						audioReceiver.start();
 						break;
 					case Protocol.SNS_RESPONSE:
 						int check = dataInputStream.readInt();
