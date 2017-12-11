@@ -68,7 +68,7 @@ public class AudioServer extends Thread {
 		try {
 			int readSize;
 			targetDataLine.start();
-			sendPacket = new DatagramPacket(buffer, buffer.length);
+			sendPacket.setData(buffer, 0, buffer.length);
 			while (true) {
 				readSize = audioInputStream.read(buffer, 0, FRAME_SIZE);
 //				for(int i=0; i<sendPackets.length; i++) {
