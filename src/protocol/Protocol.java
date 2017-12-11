@@ -19,8 +19,11 @@ public class Protocol {
 	public static final int CALL_REQUEST = 15; // 전화 요청
 	public static final int CALL_RESPONSE = 16;
 	public static final int CALL_ADD_REQUEST = 17;
+	public static final int CALL_DISCONNECT = 18;
 	public static final int SNS_REQUEST = 19;
 	public static final int SNS_RESPONSE = 20;
+	public static final int CALLING = 21;
+	public static final int CALLING_OK = 22;
 	
 //	public static final int STATE_REQUEST = 8; // 상태메세지 변경 요청
 //	public static final int STATE_RESPONSE = 9; // 상태메세지 변경 응답

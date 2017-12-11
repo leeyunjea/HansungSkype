@@ -42,12 +42,6 @@ public class AudioReceiver extends Thread {
 	public AudioReceiver(int port) {
 		this.port = port;
 		debug.Debug.log("AudioReceiver Create    Port : " + port);
-		try {
-			receiverSocket = new DatagramSocket(port);
-		} catch (SocketException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		adFormat = getAudioFormat();
 		DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, adFormat);
 		try {
@@ -68,7 +62,7 @@ public class AudioReceiver extends Thread {
 	public void run() {
 		debug.Debug.log("AudioReceiver Start   Port : " + port);
 		try {
-
+			receiverSocket = new DatagramSocket(port);
 			byte[] receiveData = new byte[FRAME_SIZE];
 			while (action) {
 				// beforeTime = System.currentTimeMillis();
@@ -121,7 +115,12 @@ public class AudioReceiver extends Thread {
 				}
 			} catch (Exception e) {
 				System.out.println(e);
+				Thread.interrupted();
 			}
 		}
+	}
+	public void remove() {
+		receiverSocket.close();
+		this.interrupt();
 	}
 }

@@ -146,6 +146,9 @@ public class VoiceStandbyPanel extends JPanel {
 			if(e.getSource() == callexit) {
 				mainFrame.setContentPane(mainFrame.getHome());
 			}
+			else if(e.getSource() == callexit) {
+				mainFrame.setContentPane(mainFrame.getHome());
+			}
 		}
 		
 	}

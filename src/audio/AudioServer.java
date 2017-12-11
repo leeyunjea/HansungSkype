@@ -80,7 +80,14 @@ public class AudioServer extends Thread {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			sendSocket.close();
+			Thread.interrupted();
 		}
+	}
+	
+	public void remove() {
+		sendSocket.close();
+		this.interrupt();
 	}
 	
 }

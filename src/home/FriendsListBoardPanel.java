@@ -273,6 +273,7 @@ public class FriendsListBoardPanel extends JPanel implements ActionListener {
 				sendMessage();
 			}
 			if (e.getSource() == voice) {
+				
 				VoiceStandbyPanel voiceStandbyPanel = new VoiceStandbyPanel(mainFrame, f,
 						mainFrame.getHome().getProfilePanel());
 				mainFrame.setContentPane(voiceStandbyPanel);

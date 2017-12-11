@@ -27,6 +27,7 @@ import home.FriendsListBoardPanel;
 import home.FriendsListPanel;
 import home.MultiChatBoardPanel;
 import home.SmallMessageFrame;
+import home.VoiceReceiveFrame;
 
 public class ReceiveThread extends Thread {
 
@@ -47,7 +48,12 @@ public class ReceiveThread extends Thread {
 	private String buffer;
 	private Vector<ChatRoom> rooms;
 	private Vector<SNS> snss;
+	
+	private VoiceReceiveFrame voiceReceiveFrame;
 
+	private AudioReceiver audioReceiver;
+	private AudioServer audioServer;
+	
 	public ReceiveThread(String id, String pw, MainFrame mainFrame) {
 		this.id = id;
 		this.pw = pw;
@@ -131,6 +137,7 @@ public class ReceiveThread extends Thread {
 						for (int i = 0; i < users.size(); i++) {
 							if (users.get(i).getId().equals(buffer)) {
 								users.get(i).setConnectionState(true);
+								users.get(i).setIp(address);
 								debug.Debug.log(users.get(i).getId() + " is Login");
 								break;
 							}
@@ -273,10 +280,15 @@ public class ReceiveThread extends Thread {
 						int writePort = dataInputStream.readInt();
 						InetAddress partnerAddress = (InetAddress) objectInputStream.readObject();
 						debug.Debug.log("ReceiveThread  Get : CALL_RESPONSE   writePort : " + writePort + "  readPort : " + readPort + "   address : " + partnerAddress.getHostAddress());
-						AudioReceiver audioReceiver = new AudioReceiver(readPort);
- 						AudioServer audioServer = new AudioServer(partnerAddress, writePort);
+						audioReceiver = new AudioReceiver(readPort);
+ 						audioServer = new AudioServer(partnerAddress, writePort);
  						audioReceiver.start();
  						audioServer.start();
+						break;
+					case Protocol.CALLING:
+						String partnerId = dataInputStream.readUTF();
+						UserInfo partner = getUser(partnerId);
+						voiceReceiveFrame = new VoiceReceiveFrame(user, partner, this, false);
 						break;
 					case Protocol.SNS_RESPONSE:
 						int check = dataInputStream.readInt();
@@ -290,6 +302,11 @@ public class ReceiveThread extends Thread {
 									+ s.get(i).getMsg());
 						}
 						break;
+					case Protocol.CALL_DISCONNECT:
+						audioReceiver.remove();
+						audioServer.remove();
+						audioReceiver = null;
+						audioServer = null;
 					}
 				}
 			} else if (dataInputStream.readInt() == Protocol.LOGIN_FAIL) {
@@ -367,4 +384,11 @@ public class ReceiveThread extends Thread {
 		return dataOutputStream;
 	}
 
+	public UserInfo getUser(InetAddress address) {
+		for (int i = 0; i < users.size(); i++) {
+			if (users.get(i).getIp().equals(address))
+				return users.get(i);
+		}	
+		return null;
+	}
 }
