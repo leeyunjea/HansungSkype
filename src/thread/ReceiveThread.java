@@ -391,4 +391,18 @@ public class ReceiveThread extends Thread {
 		}	
 		return null;
 	}
+	
+	public boolean isAudioServer() {
+		if(audioServer == null) 
+			return false;
+			
+		return true;
+	}
+	
+	public boolean isAudioReceiver() {
+		if(audioReceiver == null) 
+			return false;
+			
+		return true;
+	}
 }

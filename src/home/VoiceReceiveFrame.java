@@ -325,6 +325,7 @@ public class VoiceReceiveFrame extends JFrame {
 				if (e.getSource() == callexit) {
 					voiceReceiveFrame.dispose();
 					receiveThread.writeInt(Protocol.CALL_DISCONNECT);
+					debug.Debug.log("Client Disconnect");
 				}
 				if (labelTemp == greencall) {
 					changePanel(voiceReceiveFrame);
