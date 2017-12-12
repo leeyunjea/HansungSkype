@@ -70,9 +70,9 @@ public class VoiceReceiveFrame extends JFrame {
 	 */
 
 	// 테스트 -> 통화가 될때 띄워야 하는데 아직 기능이 없으므로 main함수 테스트용으로 만듬
-//	public static void main(String args[]) {
-//		new VoiceReceiveFrame(new UserInfo(), new UserInfo());
-//	}
+	// public static void main(String args[]) {
+	// new VoiceReceiveFrame(new UserInfo(), new UserInfo());
+	// }
 	//
 
 	class VoiceReceivedPanel extends JPanel {
@@ -197,7 +197,7 @@ public class VoiceReceiveFrame extends JFrame {
 				if (e.getSource() == callexit) {
 					voiceReceiveFrame.dispose();
 					receiveThread.writeInt(Protocol.CALL_DISCONNECT);
-					if(receiver)
+					if (receiver)
 						receiveThread.writeInt(Protocol.CALLING_OK);
 				}
 			}
@@ -334,7 +334,7 @@ public class VoiceReceiveFrame extends JFrame {
 					receiveThread.writeInt(Protocol.CALL_DISCONNECT);
 					receiveThread.getAudioServer().remove();
 					Vector<AudioReceiver> receivers = receiveThread.getAudioReceivers();
-					for(int i=0; i<receivers.size(); i++) {
+					for (int i = 0; i < receivers.size(); i++) {
 						receivers.get(i).remove();
 						receivers.remove(i);
 					}
@@ -364,21 +364,23 @@ public class VoiceReceiveFrame extends JFrame {
 	public VoiceReceivingPanel getVoiceReceivingPanel() {
 		return v1;
 	}
-	
+
 	public static synchronized void playSound(String file_url) {
-        new Thread(new Runnable() {
-           public void run() {
-              try {
-                 File file = new File(file_url);
-                 AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
-                 Clip clip = AudioSystem.getClip();
-                 clip.open(inputStream);
-                 clip.start();
-              }catch(Exception e) {
-                 e.printStackTrace();
-              }
-           }
-        }).start();
-     }
-	
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					while (true) {
+						File file = new File(file_url);
+						AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
+						Clip clip = AudioSystem.getClip();
+						clip.open(inputStream);
+						clip.start();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
 }

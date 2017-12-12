@@ -309,6 +309,7 @@ public class ReceiveThread extends Thread {
 						}
 						break;
 					case Protocol.CALL_DISCONNECT:
+						debug.Debug.log("GET DISCONNECT");
 						InetAddress disAddress = (InetAddress) objectInputStream.readObject();
 						int disPort = dataInputStream.readInt();
 						for(int i=0; i<audioReceivers.size(); i++) {
