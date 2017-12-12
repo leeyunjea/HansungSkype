@@ -68,8 +68,8 @@ public class AudioReceiver extends Thread {
 				// beforeTime = System.currentTimeMillis();
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 				receiverSocket.receive(receivePacket);
-				System.out.println(
-						"RECEIVED: " + receivePacket.getAddress().getHostAddress() + " " + receivePacket.getPort());
+//				System.out.println(
+//						"RECEIVED: " + receivePacket.getAddress().getHostAddress() + " " + receivePacket.getPort());
 				try {
 					byte audioData[] = receivePacket.getData();
 					java.io.InputStream byteInputStream = new ByteArrayInputStream(audioData);
