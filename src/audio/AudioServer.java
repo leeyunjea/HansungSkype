@@ -104,5 +104,13 @@ public class AudioServer extends Thread {
 		packetVector.add(packet);
 		sendPackets = (DatagramPacket[])packetVector.toArray(sendPackets);
 	}
+
+	public void removeUser(InetAddress disAddress) {
+		for(int i=0; i<packetVector.size(); i++) {
+			if(packetVector.get(i).getAddress().equals(disAddress)) 
+				packetVector.remove(i);
+		}
+		sendPackets = (DatagramPacket[])packetVector.toArray(sendPackets);
+	}
 	
 }

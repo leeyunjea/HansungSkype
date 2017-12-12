@@ -123,4 +123,8 @@ public class AudioReceiver extends Thread {
 		receiverSocket.close();
 		this.interrupt();
 	}
+
+	public int getPort() {
+		return port;
+	}
 }

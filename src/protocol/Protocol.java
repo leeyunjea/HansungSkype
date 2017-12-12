@@ -26,6 +26,7 @@ public class Protocol {
 	public static final int CALLING_OK = 22;
 	public static final int CALL_ADD_RESPONSE = 23;
 	public static final int CALL_ADD = 24;
+	public static final int CALL_END = 25;
 	
 //	public static final int STATE_REQUEST = 8; // 상태메세지 변경 요청
 //	public static final int STATE_RESPONSE = 9; // 상태메세지 변경 응답

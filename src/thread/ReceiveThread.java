@@ -309,10 +309,22 @@ public class ReceiveThread extends Thread {
 						}
 						break;
 					case Protocol.CALL_DISCONNECT:
-						// audioReceiver.remove();
-						// audioServer.remove();
-						// audioReceiver = null;
-						// audioServer = null;
+						InetAddress disAddress = (InetAddress) objectInputStream.readObject();
+						int disPort = dataInputStream.readInt();
+						for(int i=0; i<audioReceivers.size(); i++) {
+							if(audioReceivers.get(i).getPort() == disPort) {
+								audioReceivers.get(i).remove();
+								audioReceivers.remove(i);
+							}
+						}
+						audioServer.removeUser(disAddress);
+						break;
+					case Protocol.CALL_END:
+						for(int i=0; i<audioReceivers.size(); i++) {
+							audioReceivers.get(i).remove();
+							audioReceivers.remove(i);
+						}
+						audioServer.remove();
 						break;
 					case Protocol.CALL_ADD:
 						int addUserPort = dataInputStream.readInt();
@@ -442,5 +454,13 @@ public class ReceiveThread extends Thread {
 			return false;
 
 		return true;
+	}
+
+	public AudioServer getAudioServer() {
+		return audioServer;
+	}
+	
+	public Vector<AudioReceiver> getAudioReceivers() {
+		return audioReceivers;
 	}
 }

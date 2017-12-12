@@ -11,13 +11,18 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.Vector;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import audio.AudioReceiver;
 import chat.ChatRoom;
 import database.UserInfo;
 import login.Login;
@@ -222,6 +227,7 @@ public class VoiceReceiveFrame extends JFrame {
 
 		public VoiceReceivingPanel(VoiceReceiveFrame voiceReceiveFrame) {
 			this.voiceReceiveFrame = voiceReceiveFrame;
+			playSound("music/calling.wav");
 			debug.Debug.log("VoiceReceivingPanel");
 			setSize(VoiceReceiveFrame.WIDTH, VoiceReceiveFrame.HEIGHT);
 			setLayout(null);
@@ -326,6 +332,12 @@ public class VoiceReceiveFrame extends JFrame {
 				if (e.getSource() == callexit) {
 					voiceReceiveFrame.dispose();
 					receiveThread.writeInt(Protocol.CALL_DISCONNECT);
+					receiveThread.getAudioServer().remove();
+					Vector<AudioReceiver> receivers = receiveThread.getAudioReceivers();
+					for(int i=0; i<receivers.size(); i++) {
+						receivers.get(i).remove();
+						receivers.remove(i);
+					}
 					debug.Debug.log("Client Disconnect");
 				}
 				if (labelTemp == greencall) {
@@ -352,5 +364,21 @@ public class VoiceReceiveFrame extends JFrame {
 	public VoiceReceivingPanel getVoiceReceivingPanel() {
 		return v1;
 	}
+	
+	public static synchronized void playSound(String file_url) {
+        new Thread(new Runnable() {
+           public void run() {
+              try {
+                 File file = new File(file_url);
+                 AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
+                 Clip clip = AudioSystem.getClip();
+                 clip.open(inputStream);
+                 clip.start();
+              }catch(Exception e) {
+                 e.printStackTrace();
+              }
+           }
+        }).start();
+     }
 	
 }
