@@ -321,6 +321,7 @@ public class ReceiveThread extends Thread {
 						audioServer.removeUser(disAddress);
 						break;
 					case Protocol.CALL_END:
+						debug.Debug.log("GET CALL_END");
 						for(int i=0; i<audioReceivers.size(); i++) {
 							audioReceivers.get(i).remove();
 							audioReceivers.remove(i);
