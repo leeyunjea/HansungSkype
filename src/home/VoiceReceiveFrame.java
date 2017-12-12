@@ -369,13 +369,11 @@ public class VoiceReceiveFrame extends JFrame {
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					while (true) {
-						File file = new File(file_url);
-						AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
-						Clip clip = AudioSystem.getClip();
-						clip.open(inputStream);
-						clip.start();
-					}
+					File file = new File(file_url);
+					AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
+					Clip clip = AudioSystem.getClip();
+					clip.open(inputStream);
+					clip.start();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
