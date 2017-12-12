@@ -7,8 +7,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.logging.Handler;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,6 +37,7 @@ public class SmallMessageFrame extends JFrame {
 		this.mainFrame = mainFrame;
 		this.buffer = buffer;
 		this.receiveThread = receiveThread;
+		playSound("music/tictok.wav");
 		buffers = buffer.split("::::");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		contentPane = getContentPane();
@@ -174,6 +179,22 @@ public class SmallMessageFrame extends JFrame {
 	public void threadInterrupt() {
 		myThread.interrupt();
 	}
+	
+	public static synchronized void playSound(String file_url) {
+	      new Thread(new Runnable() {
+	         public void run() {
+	            try {
+	               File file = new File(file_url);
+	               AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
+	               Clip clip = AudioSystem.getClip();
+	               clip.open(inputStream);
+	               clip.start();
+	            }catch(Exception e) {
+	               e.printStackTrace();
+	            }
+	         }
+	      }).start();
+	   }
 	
 	
 }

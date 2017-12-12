@@ -5,6 +5,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Vector;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -34,15 +35,22 @@ public class AudioServer extends Thread {
 	private TargetDataLine targetDataLine;
 	private AudioInputStream audioInputStream;
 	private byte buffer[] = new byte[FRAME_SIZE];
-
+	
+	
 	private DatagramPacket sendPackets[];
+	private Vector<DatagramPacket> packetVector;
+	private int port;
+	
 	public AudioServer(InetAddress address, int port) {
 		debug.Debug.log("AudioSender Create      Address : " + address.getHostName() + "   port : " + port);
+		this.port = port;
+		packetVector = new Vector<DatagramPacket>();
 		adFormat = getAudioFormat();
 		DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, adFormat);
 		try {
 			sendSocket = new DatagramSocket();
 			sendPacket = new DatagramPacket(buffer, FRAME_SIZE, address, port);
+			packetVector.add(sendPacket);
 			DatagramPacket tempPackets[] = { sendPacket };
 			sendPackets = tempPackets;
 		} catch (SocketException e1) {
@@ -71,13 +79,15 @@ public class AudioServer extends Thread {
 			sendPacket.setData(buffer, 0, buffer.length);
 			while (true) {
 				readSize = audioInputStream.read(buffer, 0, FRAME_SIZE);
-//				for(int i=0; i<sendPackets.length; i++) {
-					sendPacket.setData(buffer, 0, buffer.length);
-					sendSocket.send(sendPacket);
-//					debug.Debug.log("sendPakcets["+i+"] Send");
-//				}
+				for(int i=0; i<sendPackets.length; i++) {
+					sendPackets[i].setData(buffer, 0, buffer.length);
+					sendSocket.send(sendPackets[i]);
+					debug.Debug.log("sendPakcets["+i+"] Send");
+				}
 				debug.Debug.log("Audio Write	Index : " + writeIndex);
 			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 			sendSocket.close();
@@ -88,6 +98,12 @@ public class AudioServer extends Thread {
 	public void remove() {
 		sendSocket.close();
 		this.interrupt();
+	}
+	
+	public void addUser(InetAddress address) {
+		DatagramPacket packet = new DatagramPacket(buffer, FRAME_SIZE, address, port);
+		packetVector.add(packet);
+		sendPackets = (DatagramPacket[])packetVector.toArray(sendPackets);
 	}
 	
 }

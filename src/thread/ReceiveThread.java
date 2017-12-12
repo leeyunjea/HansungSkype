@@ -48,12 +48,13 @@ public class ReceiveThread extends Thread {
 	private String buffer;
 	private Vector<ChatRoom> rooms;
 	private Vector<SNS> snss;
-	
+
 	private VoiceReceiveFrame voiceReceiveFrame;
 
+	private Vector<AudioReceiver> audioReceivers;
 	private AudioReceiver audioReceiver;
 	private AudioServer audioServer;
-	
+
 	public ReceiveThread(String id, String pw, MainFrame mainFrame) {
 		this.id = id;
 		this.pw = pw;
@@ -169,14 +170,13 @@ public class ReceiveThread extends Thread {
 								.getChatRoomListPanel(Integer.parseInt(buffers[0]));
 
 						if (b instanceof ChatRoomListPanel && b != null) {
-							ChatRoomListPanel a = (ChatRoomListPanel)b;
+							ChatRoomListPanel a = (ChatRoomListPanel) b;
 							a.getChatRoom().getChatMessages().add(buffer);
 							mainFrame.getHome().getChatRoomsPanel().setChatRooms();
 							a.invalidate();
 							a.repaint();
-						}
-						else if (b instanceof MultiChatBoardPanel && b != null) {
-							MultiChatBoardPanel a = (MultiChatBoardPanel)b;
+						} else if (b instanceof MultiChatBoardPanel && b != null) {
+							MultiChatBoardPanel a = (MultiChatBoardPanel) b;
 							a.getChatRoom().getChatMessages().add(buffer);
 							mainFrame.getHome().getChatRoomsPanel().setChatRooms();
 							a.invalidate();
@@ -190,7 +190,7 @@ public class ReceiveThread extends Thread {
 							space += buffers[3];
 							if (mainFrame.getHome().getFriendsListBoardPanel() != null)
 								mainFrame.getHome().getFriendsListBoardPanel().getTextArea().append(space + "\n");
-							else if (mainFrame.getHome().getMultiChatBoardPanel() != null ) {
+							else if (mainFrame.getHome().getMultiChatBoardPanel() != null) {
 								// mainFrame.getHome().setBoard(new
 								// MultiChatBoardPanel(mainFrame, buffers[2]
 								// ,mainFrame.getChatRoom(buffers[2])));
@@ -226,28 +226,29 @@ public class ReceiveThread extends Thread {
 								if (Integer.toString(rooms.get(i).getRoomId()).equals(buffers[0])) {
 									// 윤재
 									rooms.get(i).getChatMessages().add(buffer);
-						//			System.out.println("버퍼에 추가함");
+									// System.out.println("버퍼에 추가함");
 								}
 							}
 						}
 						break;
 					case Protocol.CONVERSATION_RESPONSE: // 대화 클릭할때 서버에서 메세지를
 															// 보내줌
-						//debug.Debug.log("Get Conversation_Response!!!!!");
+						// debug.Debug.log("Get Conversation_Response!!!!!");
 						this.rooms = (Vector<ChatRoom>) objectInputStream.readObject();
 						mainFrame.setChatRooms(this.rooms);
 						for (int i = 0; i < rooms.size(); i++) {
-						//	debug.Debug.log("yun : " + rooms.get(i).getChatMessages().toString());
+							// debug.Debug.log("yun : " +
+							// rooms.get(i).getChatMessages().toString());
 							String names = rooms.get(i).getNames();
 							String tmp[] = names.split(",");
-							if(tmp.length == 2)
+							if (tmp.length == 2)
 								mainFrame.getHome().getFriendsPanel().setChatRoom(names, rooms.get(i));
 						}
 						mainFrame.getHome().getChatRoomsPanel().setChatRoom(rooms);
 						Vector<ChatRoomListPanel> v = mainFrame.getHome().getChatRoomsPanel().getChatRoomListPanels();
-						for(int i=0; i<v.size(); i++) {
-							for(int j=0; j<rooms.size(); j++) {
-								if(v.get(i).getRoomId() == rooms.get(j).getRoomId()) {
+						for (int i = 0; i < v.size(); i++) {
+							for (int j = 0; j < rooms.size(); j++) {
+								if (v.get(i).getRoomId() == rooms.get(j).getRoomId()) {
 									v.get(i).setChatRoom(rooms.get(j));
 								}
 							}
@@ -258,15 +259,17 @@ public class ReceiveThread extends Thread {
 						buffers = buffer.split("::::");
 						String oldName = buffers[0];
 						String newName = buffers[1];
-						if(mainFrame.getHome().getBoard() instanceof MultiChatBoardPanel)
-							((MultiChatBoardPanel)mainFrame.getHome().getBoard()).setNames(newName);
-						System.out.println("Receive   GET MSG_ADD_USER_RESPONSE    oldName : " + oldName + "   newName : " + newName);
-						if(mainFrame.getHome().getChatRoomsPanel().getChatRoomListPanel(oldName) != null)
-							((ChatRoomListPanel)mainFrame.getHome().getChatRoomsPanel().getChatRoomListPanel(oldName)).setNames(newName);
+						if (mainFrame.getHome().getBoard() instanceof MultiChatBoardPanel)
+							((MultiChatBoardPanel) mainFrame.getHome().getBoard()).setNames(newName);
+						System.out.println("Receive   GET MSG_ADD_USER_RESPONSE    oldName : " + oldName
+								+ "   newName : " + newName);
+						if (mainFrame.getHome().getChatRoomsPanel().getChatRoomListPanel(oldName) != null)
+							((ChatRoomListPanel) mainFrame.getHome().getChatRoomsPanel().getChatRoomListPanel(oldName))
+									.setNames(newName);
 						Vector<ChatRoomListPanel> vv = mainFrame.getHome().getChatRoomsPanel().getChatRoomListPanels();
-						for(int i=0; i<vv.size(); i++) {
-							for(int j=0; j<rooms.size(); j++) {
-								if(vv.get(i).getChatRoom().getNames().equals(oldName)) {
+						for (int i = 0; i < vv.size(); i++) {
+							for (int j = 0; j < rooms.size(); j++) {
+								if (vv.get(i).getChatRoom().getNames().equals(oldName)) {
 									vv.get(i).setNames(newName);
 									vv.get(i).getChatRoom().setNames(newName);
 								}
@@ -279,11 +282,13 @@ public class ReceiveThread extends Thread {
 						int readPort = dataInputStream.readInt();
 						int writePort = dataInputStream.readInt();
 						InetAddress partnerAddress = (InetAddress) objectInputStream.readObject();
-						debug.Debug.log("ReceiveThread  Get : CALL_RESPONSE   writePort : " + writePort + "  readPort : " + readPort + "   address : " + partnerAddress.getHostAddress());
+						debug.Debug.log("ReceiveThread  Get : CALL_RESPONSE   writePort : " + writePort
+								+ "  readPort : " + readPort + "   address : " + partnerAddress.getHostAddress());
 						audioReceiver = new AudioReceiver(readPort);
- 						audioServer = new AudioServer(partnerAddress, writePort);
- 						audioReceiver.start();
- 						audioServer.start();
+						audioReceivers.add(audioReceiver);
+						audioServer = new AudioServer(partnerAddress, writePort);
+						audioReceiver.start();
+						audioServer.start();
 						break;
 					case Protocol.CALLING:
 						String partnerId = dataInputStream.readUTF();
@@ -303,17 +308,49 @@ public class ReceiveThread extends Thread {
 						}
 						break;
 					case Protocol.CALL_DISCONNECT:
-						audioReceiver.remove();
-						audioServer.remove();
-						audioReceiver = null;
-						audioServer = null;
+						// audioReceiver.remove();
+						// audioServer.remove();
+						// audioReceiver = null;
+						// audioServer = null;
+						break;
+					case Protocol.CALL_ADD:
+						int addUserPort = dataInputStream.readInt();
+						InetAddress addUserAddress = (InetAddress) objectInputStream.readObject();
+						audioReceiver = new AudioReceiver(addUserPort);
+						audioReceivers.add(audioReceiver);
+						audioReceiver.start();
+						audioServer.addUser(addUserAddress);
+						break;
+					case Protocol.CALL_ADD_RESPONSE:
+						int port = dataInputStream.readInt();
+						int count = dataInputStream.readInt();
+						int start = 9001;
+						for (int i = 0; i < count; i++) {
+							if (i == 0) {
+								InetAddress userAddress = (InetAddress) objectInputStream.readObject();
+								AudioServer audioServer = new AudioServer(userAddress, port);
+							} else {
+								InetAddress userAddress = (InetAddress) objectInputStream.readObject();
+								audioServer.addUser(userAddress);
+							}
+						}
+						for (int i = 0; i < count; i++) {
+							audioReceiver = new AudioReceiver(start);
+							audioReceivers.add(audioReceiver);
+							audioReceiver.start();
+							start += 1;
+						}
+						audioServer.start();
+						break;
 					}
 				}
 			} else if (dataInputStream.readInt() == Protocol.LOGIN_FAIL) {
 				debug.Debug.log("Login Fail");
 				close();
 			}
-		} catch (IOException e) {
+		} catch (
+
+		IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -330,7 +367,7 @@ public class ReceiveThread extends Thread {
 		}
 		interrupt();
 	}
-	
+
 	public Vector<SNS> getListSNS() {
 		return snss;
 	}
@@ -375,7 +412,7 @@ public class ReceiveThread extends Thread {
 	public void setSmallMessageFrame() {
 		smallMessageFrame = null;
 	}
-	
+
 	public ObjectOutputStream getObjectOutputStream() {
 		return objectOutputStream;
 	}
@@ -388,21 +425,21 @@ public class ReceiveThread extends Thread {
 		for (int i = 0; i < users.size(); i++) {
 			if (users.get(i).getIp().equals(address))
 				return users.get(i);
-		}	
+		}
 		return null;
 	}
-	
+
 	public boolean isAudioServer() {
-		if(audioServer == null) 
+		if (audioServer == null)
 			return false;
-			
+
 		return true;
 	}
-	
+
 	public boolean isAudioReceiver() {
-		if(audioReceiver == null) 
+		if (audioReceiver == null)
 			return false;
-			
+
 		return true;
 	}
 }

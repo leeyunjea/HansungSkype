@@ -191,6 +191,7 @@ public class VoiceReceiveFrame extends JFrame {
 			public void mouseReleased(MouseEvent e) {
 				if (e.getSource() == callexit) {
 					voiceReceiveFrame.dispose();
+					receiveThread.writeInt(Protocol.CALL_DISCONNECT);
 					if(receiver)
 						receiveThread.writeInt(Protocol.CALLING_OK);
 				}
