@@ -343,7 +343,7 @@ public class ReceiveThread extends Thread {
 						for (int i = 0; i < count; i++) {
 							if (i == 0) {
 								InetAddress userAddress = (InetAddress) objectInputStream.readObject();
-								AudioServer audioServer = new AudioServer(userAddress, port);
+								audioServer = new AudioServer(userAddress, port);
 							} else {
 								InetAddress userAddress = (InetAddress) objectInputStream.readObject();
 								audioServer.addUser(userAddress);
@@ -464,5 +464,13 @@ public class ReceiveThread extends Thread {
 	
 	public Vector<AudioReceiver> getAudioReceivers() {
 		return audioReceivers;
+	}
+	
+	public void audioClose() {
+		audioServer.remove();
+		for(int i=0; i<audioReceivers.size(); i++) {
+			audioReceivers.get(i).remove();
+		}
+		audioServer = null;
 	}
 }

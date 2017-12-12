@@ -56,6 +56,7 @@ public class SNSPanel extends JPanel {
 		area.setBackground(Color.WHITE);
 		area.setBorder(BorderFactory.createLineBorder(new Color(216, 229, 239)));
 		area.append(sns.getMsg());
+		area.setEditable(false);
 		add(area);
 		
 		

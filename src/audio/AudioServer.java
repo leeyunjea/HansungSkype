@@ -82,7 +82,7 @@ public class AudioServer extends Thread {
 				for(int i=0; i<sendPackets.length; i++) {
 					sendPackets[i].setData(buffer, 0, buffer.length);
 					sendSocket.send(sendPackets[i]);
-					//debug.Debug.log("sendPakcets["+i+"] Send");
+					debug.Debug.log("sendPakcets["+i+"] Send");
 				}
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
