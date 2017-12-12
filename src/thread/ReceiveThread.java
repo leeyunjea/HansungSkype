@@ -78,6 +78,7 @@ public class ReceiveThread extends Thread {
 
 	public void run() {
 		try {
+			audioReceivers = new Vector<AudioReceiver>();
 			String msg = id + "," + pw;
 			dataOutputStream.writeUTF(msg);
 
