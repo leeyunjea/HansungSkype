@@ -40,6 +40,7 @@ public class AudioServer extends Thread {
 	private DatagramPacket sendPackets[];
 	private Vector<DatagramPacket> packetVector;
 	private int port;
+	private boolean action = true;
 	
 	public AudioServer(InetAddress address, int port) {
 		debug.Debug.log("AudioSender Create      Address : " + address.getHostName() + "   port : " + port);
@@ -77,7 +78,7 @@ public class AudioServer extends Thread {
 			int readSize;
 			targetDataLine.start();
 			sendPacket.setData(buffer, 0, buffer.length);
-			while (true) {
+			while (action) {
 				readSize = audioInputStream.read(buffer, 0, FRAME_SIZE);
 				for(int i=0; i<sendPackets.length; i++) {
 					sendPackets[i].setData(buffer, 0, buffer.length);
@@ -96,6 +97,7 @@ public class AudioServer extends Thread {
 	
 	public void remove() {
 		sendSocket.close();
+		action = false;
 		this.interrupt();
 	}
 	

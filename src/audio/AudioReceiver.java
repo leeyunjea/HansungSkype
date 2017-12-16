@@ -121,6 +121,7 @@ public class AudioReceiver extends Thread {
 	}
 	public void remove() {
 		receiverSocket.close();
+		action = false;
 		this.interrupt();
 	}
 
