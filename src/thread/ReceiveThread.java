@@ -340,7 +340,7 @@ public class ReceiveThread extends Thread {
 						int port = dataInputStream.readInt();
 						int count = dataInputStream.readInt();
 						int start = 9001;
-						for (int i = 0; i < count; i++) {
+						for (int i = 0; i < count - 1; i++) {
 							if (i == 0) {
 								InetAddress userAddress = (InetAddress) objectInputStream.readObject();
 								audioServer = new AudioServer(userAddress, port);
@@ -349,7 +349,7 @@ public class ReceiveThread extends Thread {
 								audioServer.addUser(userAddress);
 							}
 						}
-						for (int i = 0; i < count; i++) {
+						for (int i = 0; i < count - 1; i++) {
 							audioReceiver = new AudioReceiver(start);
 							audioReceivers.add(audioReceiver);
 							audioReceiver.start();

@@ -112,7 +112,9 @@ public class AudioServer extends Thread {
 			if(packetVector.get(i).getAddress().equals(disAddress)) 
 				packetVector.remove(i);
 		}
-		sendPackets = (DatagramPacket[])packetVector.toArray(sendPackets);
+		DatagramPacket newPackets[];
+		newPackets = (DatagramPacket[])packetVector.toArray(sendPackets);
+		sendPackets = newPackets;
 	}
 	
 }

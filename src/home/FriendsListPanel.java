@@ -121,16 +121,16 @@ public class FriendsListPanel extends JPanel {
 		case "ÀÌÀ±Àç":
 			img = "images/usertwo.png";
 			break;
-		case "¹é½ÂÈ¯":
+		case "±èÇÏ´Ã":
 			img = "images/userthree.png";
 			break;
-		case "ÀÌÅÂÀ±":
+		case "ÀÌ¿¹Áö":
 			img = "images/userfour.png";
 			break;
-		case "¹ÎÅÂ¼º":
+		case "ÃÖ¿ø±Õ":
 			img = "images/userfive.png";
 			break;
-		case "ÃÖ¿ø±Õ":
+		case "¹ÎÅÂ¼º":
 			img = "images/usersix.png";
 			break;
 		}
